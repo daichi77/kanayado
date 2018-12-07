@@ -1,4 +1,3 @@
-import Map from './src/Map' 
+import Header from './src/header';
 
-export default Map;
-
+export default Header;
