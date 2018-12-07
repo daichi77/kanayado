@@ -1,6 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Map from './src/Map' 
 
+<<<<<<< HEAD
+export default Map;
+=======
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -15,3 +17,4 @@ const App = () => (
   </View>
 );
 export default App;
+>>>>>>> 7fff3a1177f0c296d9136914b7db41853baddbe9
