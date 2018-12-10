@@ -13,10 +13,13 @@
     "@turf/destination": "^6.0.1",
     "expo": "^30.0.1",
     "expo-cli": "^2.6.5",
+    "node-fetch": "^2.3.0",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-vector-icons": "^6.1.0",
-    "react-navigation": "^3.0.6"
+    "react-navigation": "^3.0.6",
+    "xmldom": "^0.1.27",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
