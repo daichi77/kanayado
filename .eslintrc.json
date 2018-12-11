@@ -1,6 +1,10 @@
 {
     "extends": "airbnb",
     "parser": "babel-eslint",
+    "globals": {
+        "fetch": true,
+        "XMLHttpRequest": true
+    },
     "rules": {
         "react/jsx-filename-extension": [
             1,

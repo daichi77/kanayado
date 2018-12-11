@@ -1,9 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { MapView } from 'expo';
-import fetch from 'node-fetch';
 import { DOMParser } from 'xmldom';
-// mport { XMLHttpRequest } from 'xmlhttprequest';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 
 const lodgingSpotData = [];
@@ -56,10 +54,15 @@ export default class Map extends React.Component {
   lodgingSpot(url) {
     const parser = new DOMParser();
     const xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState !== 4) {
+        return;
+      }
+
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
-          const sMyString = xmlhttp._response;
+          console.log(xmlhttp.responseXML);
+          const sMyString = xmlhttp.responseText;
           const dom = parser.parseFromString(sMyString, 'text/xml');
           const hotels = dom.getElementsByTagName('Hotel');
           for (let i = 0; i < hotels.length; i += 1) {
@@ -69,18 +72,23 @@ export default class Map extends React.Component {
             const jy = hotels[i].getElementsByTagName('Y')[0].textContent / 1000 / 3600;
             const wx = (jx - jy * 0.000046038 - jx * 0.000083043 + 0.010040);
             const wy = (jy - jy * 0.00010695 + jx * 0.000017464 + 0.0046017);
-            lodgingSpotData[i] = { 'HotelID': hotelId, 'HotelName': hotelName, 'X': wx, 'Y': wy }
+            lodgingSpotData[i] = {
+              HotelID: hotelId,
+              HotelName: hotelName,
+              X: wx,
+              Y: wy,
+            };
           }
           this.setState({ lodgingFacilities: lodgingSpotData });
         }
       }
-    }.bind(this);
+    };
     xmlhttp.open('GET', url);
-    xmlhttp.responseType = 'document';
     xmlhttp.send();
   }
 
   render() {
+    const { lodgingFacilities, touristFacilities } = this.state;
     return (
       <View style={styles.container}>
         <MapView
@@ -94,7 +102,7 @@ export default class Map extends React.Component {
         >
           {
             // 宿泊施設にピンを配置
-            this.state.lodgingFacilities.map((lodgingFacilitie) => {
+            lodgingFacilities.map((lodgingFacilitie) => {
               let title = '宿泊地';
               if (lodgingFacilitie.HotelID !== undefined) {
                 title = lodgingFacilitie.HotelName;
@@ -112,7 +120,7 @@ export default class Map extends React.Component {
           }
           {
             // 観光施設にピンを配置
-            this.state.touristFacilities.map((touristFacilitie) => {
+            touristFacilities.map((touristFacilitie) => {
               let title = '観光地名';
               if (touristFacilitie.id !== undefined) {
                 title = touristFacilitie.name;
