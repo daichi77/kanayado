@@ -61,7 +61,6 @@ export default class Map extends React.Component {
 
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
-          console.log(xmlhttp.responseXML);
           const sMyString = xmlhttp.responseText;
           const dom = parser.parseFromString(sMyString, 'text/xml');
           const hotels = dom.getElementsByTagName('Hotel');
