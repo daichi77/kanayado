@@ -1,4 +1,3 @@
-import Map from './src/Map' 
+import Header from './src/Stack';
 
-export default Map;
-
+export default Header;
