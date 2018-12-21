@@ -13,6 +13,7 @@ let start1 = 1;
 let start2 = 1;
 
 const jalanKey = 'and16735d417c1';
+const timeData = 20181222;
 
 
 const styles = StyleSheet.create({
@@ -112,7 +113,7 @@ export default class Map extends React.Component {
           hotelsData = hotelsData.concat(hotelData);
           this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
         } else if (xmlhttp.status === 400) {
-          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=20181220&start=${start2}&count=100&order=2`);
+          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${timeData}&start=${start2}&count=100&order=2`);
         }
       }
     };
@@ -161,7 +162,7 @@ export default class Map extends React.Component {
           // 100件の空室データから重複したIDを削除(値段が安いのが残る)
           vacancysData = vacancysData.concat(hotelData);
           start2 += 100;
-          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=20181220&start=${start2}&count=100&order=2`);
+          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${timeData}&start=${start2}&count=100&order=2`);
         } else if (xmlhttp.status === 400) {
           // 全ての空室データから重複したIDを削除(値段が安いのが残る)
           vacancysData = vacancysData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
