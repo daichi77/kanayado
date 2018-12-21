@@ -8,10 +8,8 @@ let hotelsData = [];
 let vacancysData = [];
 let lodgingSpotData = [];
 let touristSpotData = [];
-
 let start1 = 1;
 let start2 = 1;
-
 const jalanKey = 'and16735d417c1';
 const timeData = 20181222;
 
