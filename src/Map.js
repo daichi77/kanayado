@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { MapView } from 'expo';
+import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 
