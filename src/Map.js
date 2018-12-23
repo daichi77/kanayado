@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Map extends React.Component {
+class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,7 +51,7 @@ export default class Map extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.touristSpot('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1');
     this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
   }
@@ -252,3 +252,5 @@ export default class Map extends React.Component {
     );
   }
 }
+
+export default Map;

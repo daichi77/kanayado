@@ -54,7 +54,7 @@ class DrawerCustom extends React.Component {
     const { filterText } = this.state;
     let { kankoudata } = this.state;
     if (filterText !== '') {
-      kankoudata = kankoudata.filter(t => t.name.includes(filterText))
+      kankoudata = kankoudata.filter(t => t.name.includes(filterText));
     }
 
     return (
@@ -63,7 +63,7 @@ class DrawerCustom extends React.Component {
           <Icon
             name="left"
             size={35}
-            onPress={() => navigation.closeDrawer()}
+            onPress={() => navigation.navigate('MainScreen')}
             style={styles.icon}
           />
           <SearchBar

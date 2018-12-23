@@ -6,7 +6,7 @@ import Map from './Map';
 import MapDist from './mapDist';
 
 const Stack = createStackNavigator({
-  MainScreen: { screen: Map },
+  MainScreen: { screen: Map, key: '1234' },
   Dist: { screen: MapDist },
 }, {
   defaultNavigationOptions: {

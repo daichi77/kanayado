@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import PropTypes from 'prop-types';
+import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 
 class MapDist extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -43,6 +44,7 @@ class MapDist extends Component {
               longitude: coordinates.longitude,
             }}
             title={name}
+            image={touristSpotMarkerImg}
           />
         </MapView>
       </View>
