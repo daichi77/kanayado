@@ -7,6 +7,26 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { SearchBar } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
+const styles = StyleSheet.create({
+  searchAndIcon: {
+    flexDirection: 'row',
+    marginTop: 30,
+  },
+  icon: {
+    marginTop: 6,
+    marginLeft: 10,
+  },
+  kankouview: {
+    padding: 10,
+    borderStyle: 'solid',
+    borderBottomWidth: 1,
+  },
+  kankoutext: {
+    fontSize: 16,
+    lineHeight: 25,
+  },
+});
+
 class DrawerCustom extends React.Component {
   constructor(props) {
     super(props);
@@ -17,12 +37,12 @@ class DrawerCustom extends React.Component {
   }
 
   componentWillMount() {
-    this.fetch();
+    this.getSpot();
   }
 
   keyExtractor = item => item.id;
 
-  fetch = () => {
+  getSpot = () => {
     fetch('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1')
       .then(response => response.json())
       .then((responseJson) => {
@@ -31,25 +51,6 @@ class DrawerCustom extends React.Component {
   };
 
   render() {
-    const styles = StyleSheet.create({
-      searchAndIcon: {
-        flexDirection: 'row',
-        marginTop: 30,
-      },
-      icon: {
-        marginTop: 6,
-        marginLeft: 10,
-      },
-      kankouview: {
-        padding: 10,
-        borderStyle: 'solid',
-        borderBottomWidth: 1,
-      },
-      kankoutext: {
-        fontSize: 16,
-        lineHeight: 25,
-      },
-    });
     const { navigation } = this.props;
     const { filterText } = this.state;
     let { kankoudata } = this.state;
@@ -63,7 +64,10 @@ class DrawerCustom extends React.Component {
           <Icon
             name="left"
             size={35}
-            onPress={() => navigation.navigate('MainScreen')}
+            onPress={() => {
+              navigation.closeDrawer();
+              navigation.navigate('MainScreen');
+            }}
             style={styles.icon}
           />
           <SearchBar

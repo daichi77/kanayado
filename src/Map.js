@@ -13,7 +13,6 @@ let start2 = 1;
 const jalanKey = 'and16735d417c1';
 const timeData = 20181222;
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -176,6 +175,23 @@ class Map extends React.Component {
   }
 
   render() {
+    /* const { navigation } = this.props;
+    const { coordinates } = navigation.getParam('dist');
+    const nowRegion = {
+      latitude: 36.5780818,
+      longitude: 136.6478206,
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00521,
+    };
+    if (coordinates) {
+      const searcedRegion = {
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+        latitudeDelta: 0.00922,
+        longitudeDelta: 0.00521,
+      };
+    }
+    const region = searcedRegion ? searcedRegion : nowRegion; */
     const { lodgingFacilities, touristFacilities } = this.state;
     return (
       <View style={styles.container}>
