@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { SearchBar } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import SearchBar from './searchBar';
 
 const styles = StyleSheet.create({
   searchAndIcon: {
@@ -50,6 +50,12 @@ class DrawerCustom extends React.Component {
       });
   };
 
+  setFilter = (text) => {
+    this.setState({
+      filterText: text,
+    });
+  }
+
   render() {
     const { navigation } = this.props;
     const { filterText } = this.state;
@@ -57,7 +63,6 @@ class DrawerCustom extends React.Component {
     if (filterText !== '') {
       kankoudata = kankoudata.filter(t => t.name.includes(filterText));
     }
-
     return (
       <SafeAreaView>
         <View style={styles.searchAndIcon}>
@@ -71,18 +76,7 @@ class DrawerCustom extends React.Component {
             style={styles.icon}
           />
           <SearchBar
-            round
-            placeholder="観光地を検索"
-            containerStyle={{
-              width: 270,
-              backgroundColor: '#FFFFFF',
-              borderTopWidth: 0,
-              borderBottomWidth: 0,
-              marginLeft: 20,
-            }}
-            inputStyle={{ backgroundColor: '#F8FBEF' }}
-            returnKeyType="done"
-            onChangeText={text => this.setState({ filterText: text })}
+            includeFilter={(text) => { this.setFilter(text); }}
           />
         </View>
         <ScrollView>
