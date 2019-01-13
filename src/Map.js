@@ -2,7 +2,9 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
+import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
+
 
 let hotelsData = [];
 let vacancysData = [];
@@ -11,7 +13,7 @@ let touristSpotData = [];
 let start1 = 1;
 let start2 = 1;
 const jalanKey = 'and16735d417c1';
-const timeData = 20181230;
+const timeData = 20190114;
 
 const styles = StyleSheet.create({
   container: {
@@ -39,6 +41,18 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontWeight: 'bold',
   },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  modal2: {
+    height: 230,
+    backgroundColor: '#3B5998',
+  },
+  modal4: {
+    height: 200,
+  },
 });
 
 class Map extends React.Component {
@@ -47,6 +61,7 @@ class Map extends React.Component {
     this.state = {
       touristFacilities: [],
       lodgingFacilities: [],
+      isOpen: false,
     };
   }
 
@@ -54,6 +69,8 @@ class Map extends React.Component {
     this.touristSpot('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1');
     this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
   }
+
+  toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }))
 
   // 観光地取得
   touristSpot = async (url) => {
@@ -131,7 +148,6 @@ class Map extends React.Component {
 
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
-          // eslint-disable-next-line no-underscore-dangle
           const sMyString = xmlhttp.responseText;
           const dom = parser.parseFromString(sMyString, 'text/xml');
           const hotels = dom.getElementsByTagName('Plan');
@@ -175,12 +191,16 @@ class Map extends React.Component {
   }
 
   render() {
-    const { lodgingFacilities, touristFacilities } = this.state;
+    const { lodgingFacilities, touristFacilities, isOpen } = this.state;
     return (
       <View style={styles.container}>
+        <Modal
+          isOpen={isOpen}
+          toggleIsOpen={this.toggleIsOpen}
+        />
         <MapView
           style={styles.mapview}
-          region={{
+          initialRegion={{
             latitude: 36.5780818,
             longitude: 136.6478206,
             latitudeDelta: 0.00922,
@@ -201,6 +221,7 @@ class Map extends React.Component {
                       latitude: lodgingFacilitie.Y,
                       longitude: lodgingFacilitie.X,
                     }}
+                    onPress={() => this.setState({ isOpen: true })}
                     key={lodgingFacilitie.HotelID}
                   >
                     <View style={styles.marker}>
@@ -216,6 +237,7 @@ class Map extends React.Component {
                     latitude: lodgingFacilitie.Y,
                     longitude: lodgingFacilitie.X,
                   }}
+                  onPress={() => this.setState({ isOpen: true })}
                   key={lodgingFacilitie.HotelID}
                 >
                   <View style={styles.marker1}>
