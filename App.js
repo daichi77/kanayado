@@ -1,3 +1,11 @@
-import Header from './src/Stack';
+import React from 'react';
+import { createAppContainer } from 'react-navigation';
+import Drawer from './src/drawer';
 
-export default Header;
+const AppContainer = createAppContainer(Drawer);
+
+const App = () => (
+  <AppContainer />
+);
+
+export default App;
