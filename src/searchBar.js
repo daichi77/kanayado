@@ -31,7 +31,7 @@ class Search extends React.Component {
   }
 }
 
-SearchBar.propTypes = {
+Search.propTypes = {
   includeFilter: PropTypes.func.isRequired,
 };
 
