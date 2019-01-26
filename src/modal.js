@@ -12,31 +12,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 150,
   },
-  yoko: {
+
+  horizontal: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  tate: {
+  vertical: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
   },
-  text: {
+
+  text1: {
     color: '#000000',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: '8%',
   },
-  text1: {
+  text2: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: '15%',
   },
-  marker1: {
+
+  background1: {
     width: '80%',
     height: '80%',
     position: 'absolute',
@@ -44,7 +47,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderRadius: 20,
   },
-  marker2: {
+  background2: {
     width: '80%',
     height: '80%',
     position: 'absolute',
@@ -54,11 +57,9 @@ const styles = StyleSheet.create({
   },
 });
 
-// 写真がない時に問題が起こる。
-// itemのPropTypes宣言
-// 関数名や変数名の修正
-const Modals = ({
-  isOpen, toggleIsOpen, item, fetchToilet,
+const ModalScreen = ({
+  // eslint-disable-next-line react/prop-types
+  isOpen, toggleIsOpen, data, detailScreen,
 }) => (
   <Modal
     isOpen={isOpen}
@@ -67,44 +68,42 @@ const Modals = ({
     style={[styles.modal]}
     position="bottom"
   >
-    <View style={styles.yoko}>
+    <View style={styles.horizontal}>
       <View style={{ width: '40%', height: '100%' }}>
         <Image
-          source={{ uri: item.PictureURL }}
+          source={{ uri: data.PictureURL }}
           style={{ width: '100%', height: '100%' }}
         />
-
       </View>
 
       <View style={{ width: '60%', height: '100%' }}>
-        <View style={styles.tate}>
+        <View style={styles.vertical}>
           <View style={{
             width: '100%', height: '30%', borderColor: '#BDBDBD', borderStyle: 'solid', borderBottomWidth: 1, borderTopWidth: 5,
           }}
           >
-            <Text style={styles.text}>{item.HotelName}</Text>
+            <Text style={styles.text1}>{data.HotelName}</Text>
           </View>
 
           <View style={{ width: '100%', height: '40%' }}>
-            <View style={styles.yoko}>
+            <View style={styles.horizontal}>
               <View style={{ width: '50%', height: '100%' }}>
-                <View style={styles.tate}>
-                  <View style={styles.marker1}>
-                    <Text style={styles.text1}>{item.PlanSampleRateFrom}</Text>
+                <View style={styles.vertical}>
+                  <View style={styles.background1}>
+                    <Text style={styles.text2}>{data.PlanSampleRateFrom}</Text>
                   </View>
-                  
                 </View>
               </View>
 
               <View style={{ width: '50%', height: '100%', position: 'relative' }}>
-                <View style={styles.tate}>
-                  <View style={styles.marker2}>
+                <View style={styles.vertical}>
+                  <View style={styles.background2}>
                     <SearchIcon1
                       name="arrowright"
                       size={30}
-                      onPress={fetchToilet}
+                      onPress={detailScreen}
                       style={{
-                        width: '100%', height: '100%', textAlign: 'center', marginTop: '10%', color: '#FFFFFF' 
+                        width: '100%', height: '100%', textAlign: 'center', marginTop: '10%', color: '#FFFFFF',
                       }}
                     />
                   </View>
@@ -112,27 +111,29 @@ const Modals = ({
               </View>
             </View>
           </View>
+
           <View style={{ width: '100%', height: '30%' }}>
-            <View style={styles.yoko}>
+            <View style={styles.horizontal}>
               <View style={{ width: '50%', height: '100%' }}>
-                <Text style={styles.text}>価格</Text>
+                <Text style={styles.text1}>価格</Text>
               </View>
 
               <View style={{ width: '50%', height: '100%' }}>
-                <Text style={styles.text}>詳細</Text>
+                <Text style={styles.text1}>詳細</Text>
               </View>
             </View>
           </View>
+
         </View>
       </View>
     </View>
   </Modal>
 );
 
-Modals.propTypes = {
+ModalScreen.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggleIsOpen: PropTypes.func.isRequired,
-  fetchToilet: PropTypes.func.isRequired,
+  detailScreen: PropTypes.func.isRequired,
 };
 
-export default Modals;
+export default ModalScreen;

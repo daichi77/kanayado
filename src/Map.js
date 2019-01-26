@@ -58,7 +58,7 @@ class Map extends React.Component {
   }
 
   componentWillMount() {
-    this.timeData1();
+    this.nowTime();
     this.touristSpot('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1');
     this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
   }
@@ -197,14 +197,16 @@ class Map extends React.Component {
     xmlhttp.send();
   }
 
+  // 現在の時刻を取得
   // eslint-disable-next-line class-methods-use-this
-  timeData1() {
+  nowTime() {
     const now = new Date();
     timeData = now.toFormat('YYYYMMDD');
   }
 
+  // 次の画面へ遷移します
   // eslint-disable-next-line class-methods-use-this
-  fetchToilet() {
+  detailScreen() {
     console.log(data);
   }
 
@@ -215,8 +217,8 @@ class Map extends React.Component {
         <Modal
           isOpen={isOpen}
           toggleIsOpen={this.toggleIsOpen}
-          item={data}
-          fetchToilet={this.fetchToilet}
+          data={data}
+          detailScreen={this.detailScreen}
         />
         <MapView
           style={styles.mapview}
