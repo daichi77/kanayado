@@ -2,16 +2,20 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
+import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
+import 'date-utils';
+
 
 let hotelsData = [];
 let vacancysData = [];
 let lodgingSpotData = [];
 let touristSpotData = [];
+let data = [];
 let start1 = 1;
 let start2 = 1;
 const jalanKey = 'and16735d417c1';
-const timeData = 20181230;
+let timeData = 0;
 
 const styles = StyleSheet.create({
   container: {
@@ -41,18 +45,29 @@ const styles = StyleSheet.create({
   },
 });
 
+
+// 関数名や変数名の修正
 class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       touristFacilities: [],
       lodgingFacilities: [],
+      isOpen: false,
     };
   }
 
   componentWillMount() {
+    this.nowTime();
     this.touristSpot('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1');
     this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
+  }
+
+  toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }))
+
+  gotoElementScreen = (lodgingFacilitie) => {
+    data = lodgingFacilitie;
+    this.setState({ isOpen: true });
   }
 
   // 観光地取得
@@ -87,10 +102,13 @@ class Map extends React.Component {
           const hotels = dom.getElementsByTagName('Hotel');
 
           for (let i = 0; i < hotels.length; i += 1) {
+            let pictureURL = '';
             const hotelId = hotels[i].getElementsByTagName('HotelID')[0].textContent;
             const hotelName = hotels[i].getElementsByTagName('HotelName')[0].textContent;
             const planSampleRateFrom = hotels[i].getElementsByTagName('SampleRateFrom')[0].textContent;
-
+            if (hotels[i].getElementsByTagName('PictureURL')[0] !== undefined) {
+              pictureURL = hotels[i].getElementsByTagName('PictureURL')[0].textContent;
+            }
             const jx = hotels[i].getElementsByTagName('X')[0].textContent / 1000 / 3600;
             const jy = hotels[i].getElementsByTagName('Y')[0].textContent / 1000 / 3600;
             const wx = (jx - jy * 0.000046038 - jx * 0.000083043 + 0.010040);
@@ -99,9 +117,10 @@ class Map extends React.Component {
             hotelData[i] = {
               HotelID: hotelId,
               HotelName: hotelName,
+              PlanSampleRateFrom: planSampleRateFrom,
+              PictureURL: pictureURL,
               X: wx,
               Y: wy,
-              PlanSampleRateFrom: planSampleRateFrom,
               State: 'noVacancy',
             };
           }
@@ -131,15 +150,18 @@ class Map extends React.Component {
 
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
-          // eslint-disable-next-line no-underscore-dangle
           const sMyString = xmlhttp.responseText;
           const dom = parser.parseFromString(sMyString, 'text/xml');
           const hotels = dom.getElementsByTagName('Plan');
 
           for (let i = 0; i < hotels.length; i += 1) {
+            let pictureURL = '';
             const hotelId = hotels[i].getElementsByTagName('HotelID')[0].textContent;
             const hotelName = hotels[i].getElementsByTagName('HotelName')[0].textContent;
             const sampleRate = hotels[i].getElementsByTagName('SampleRate')[0].textContent;
+            if (hotels[i].getElementsByTagName('PictureURL')[0] !== undefined) {
+              pictureURL = hotels[i].getElementsByTagName('PictureURL')[0].textContent;
+            }
             const jx = hotels[i].getElementsByTagName('X')[0].textContent / 1000 / 3600;
             const jy = hotels[i].getElementsByTagName('Y')[0].textContent / 1000 / 3600;
             const wx = (jx - jy * 0.000046038 - jx * 0.000083043 + 0.010040);
@@ -148,9 +170,10 @@ class Map extends React.Component {
             hotelData[i] = {
               HotelID: hotelId,
               HotelName: hotelName,
+              PlanSampleRateFrom: sampleRate,
+              PictureURL: pictureURL,
               X: wx,
               Y: wy,
-              PlanSampleRateFrom: sampleRate,
               State: 'vacancy',
             };
           }
@@ -174,13 +197,32 @@ class Map extends React.Component {
     xmlhttp.send();
   }
 
+  // 現在の時刻を取得
+  // eslint-disable-next-line class-methods-use-this
+  nowTime() {
+    const now = new Date();
+    timeData = now.toFormat('YYYYMMDD');
+  }
+
+  // 次の画面へ遷移します
+  // eslint-disable-next-line class-methods-use-this
+  detailScreen() {
+    console.log(data);
+  }
+
   render() {
-    const { lodgingFacilities, touristFacilities } = this.state;
+    const { lodgingFacilities, touristFacilities, isOpen } = this.state;
     return (
       <View style={styles.container}>
+        <Modal
+          isOpen={isOpen}
+          toggleIsOpen={this.toggleIsOpen}
+          data={data}
+          detailScreen={this.detailScreen}
+        />
         <MapView
           style={styles.mapview}
-          region={{
+          initialRegion={{
             latitude: 36.5780818,
             longitude: 136.6478206,
             latitudeDelta: 0.00922,
@@ -201,6 +243,7 @@ class Map extends React.Component {
                       latitude: lodgingFacilitie.Y,
                       longitude: lodgingFacilitie.X,
                     }}
+                    onPress={() => this.gotoElementScreen(lodgingFacilitie)}
                     key={lodgingFacilitie.HotelID}
                   >
                     <View style={styles.marker}>
@@ -216,6 +259,7 @@ class Map extends React.Component {
                     latitude: lodgingFacilitie.Y,
                     longitude: lodgingFacilitie.X,
                   }}
+                  onPress={() => this.gotoElementScreen(lodgingFacilitie)}
                   key={lodgingFacilitie.HotelID}
                 >
                   <View style={styles.marker1}>

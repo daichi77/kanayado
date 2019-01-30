@@ -31,8 +31,8 @@ class Search extends React.Component {
   }
 }
 
-SearchBar.propTypes = {
-  includeFilter: PropTypes.func,
+Search.propTypes = {
+  includeFilter: PropTypes.func.isRequired,
 };
 
 export default Search;

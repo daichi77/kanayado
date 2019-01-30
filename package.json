@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/vector-icons": "^8.0.0",
     "@turf/destination": "^6.0.1",
+    "date-utils": "^1.2.21",
     "expo": "^30.0.1",
     "expo-cli": "^2.6.5",
     "prop-types": "^15.6.2",
@@ -18,7 +19,8 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-elements": "^0.19.1",
     "react-native-maps": "^0.22.1",
-    "react-native-vector-icons": "^6.1.0",
+    "react-native-modalbox": "^1.6.0",
+    "react-native-vector-icons": "^6.2.0",
     "react-navigation": "^3.0.6",
     "xmldom": "^0.1.27"
   },
