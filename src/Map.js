@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
+import { Location, Permissions } from 'expo';
 
 let hotelsData = [];
 let vacancysData = [];
@@ -10,6 +11,8 @@ let lodgingSpotData = [];
 let touristSpotData = [];
 let start1 = 1;
 let start2 = 1;
+let lat = 0;
+let lon = 0;
 const jalanKey = 'and16735d417c1';
 const timeData = 20181230;
 
@@ -47,13 +50,30 @@ class Map extends React.Component {
     this.state = {
       touristFacilities: [],
       lodgingFacilities: [],
+      locationResult: null,
     };
   }
 
   componentWillMount() {
     this.touristSpot('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1');
     this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
+    this._getLocationAsync();
   }
+
+  // 現在地取得
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        locationResult: 'Permisstion to access location was Denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    lat = location.coords.latitude;
+    lon = location.coords.longitude;
+    this.setState({ locationResult: JSON.stringify(location) });
+  };
 
   // 観光地取得
   touristSpot = async (url) => {
@@ -175,14 +195,18 @@ class Map extends React.Component {
   }
 
   render() {
+    console.log('render');
+    console.log(lon);
     const { lodgingFacilities, touristFacilities } = this.state;
     return (
       <View style={styles.container}>
         <MapView
           style={styles.mapview}
           region={{
-            latitude: 36.5780818,
-            longitude: 136.6478206,
+            // 現在住所(少数第７位まで)
+            latitude: lat.toFixed(7),
+            longitude: lon.toFixed(7),
+            // ズーム
             latitudeDelta: 0.00922,
             longitudeDelta: 0.00521,
           }}
