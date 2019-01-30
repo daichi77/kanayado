@@ -4,7 +4,7 @@ import DrawerCustom from './drawerCustom';
 import MapDist from './mapDist';
 
 const Drawer = createDrawerNavigator({
-  Home: { screen: Stack },
+  HomeScreen: { screen: Stack },
   Dist: { screen: MapDist },
 }, {
   drawerWidth: 350,
