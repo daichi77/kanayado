@@ -5,7 +5,7 @@ import { DOMParser } from 'xmldom';
 import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 import 'date-utils';
-
+import { Location, Permissions } from 'expo';
 
 let hotelsData = [];
 let vacancysData = [];
@@ -14,6 +14,8 @@ let touristSpotData = [];
 let data = [];
 let start1 = 1;
 let start2 = 1;
+let lat = 0;
+let lon = 0;
 const jalanKey = 'and16735d417c1';
 let timeData = 0;
 
@@ -54,14 +56,36 @@ class Map extends React.Component {
       touristFacilities: [],
       lodgingFacilities: [],
       isOpen: false,
+      locationResult: null,
     };
   }
 
   componentWillMount() {
+    this.getLocationAsync();
     this.nowTime();
     this.touristSpot('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1');
     this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
   }
+
+  // 現在地取得
+  getLocationAsync = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        locationResult: 'Permisstion to access location was Denied',
+      });
+    }
+
+    const location = await Location.getCurrentPositionAsync({});
+    this.setState({ locationResult: JSON.stringify(location) });
+    lat = location.coords.latitude;
+    lon = location.coords.longitude;
+    lat = lat.toFixed(7);
+    lon = lon.toFixed(7);
+    console.log('getLocationAsync関数内：');
+    console.log(lat);
+    console.log(lon);
+  };
 
   toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }))
 
@@ -211,6 +235,9 @@ class Map extends React.Component {
   }
 
   render() {
+    console.log('render内：');
+    console.log(lat);
+    console.log(lon);
     const { lodgingFacilities, touristFacilities, isOpen } = this.state;
     return (
       <View style={styles.container}>
@@ -223,17 +250,22 @@ class Map extends React.Component {
         <MapView
           style={styles.mapview}
           initialRegion={{
-            latitude: 36.5780818,
-            longitude: 136.6478206,
+            // 現在住所(少数第７位まで)
+            // 36.5289133
+            // 136.6285175
+            latitude: lat , // 緯度
+            longitude: lon , // 経度
+            // ズーム
             latitudeDelta: 0.00922,
             longitudeDelta: 0.00521,
           }}
         >
+
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
               // const { navigation } = this.props;
-              // navigation.setParams({ lodging: lodgingFacilitie });
+              // navigaftion.setParams({ lodging: lodgingFacilitie });
               let title = '値段';
               if (lodgingFacilitie.HotelID !== undefined) {
                 title = lodgingFacilitie.PlanSampleRateFrom;
