@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
+import { withNavigation } from 'react-navigation';
+import PropTypes from 'prop-types';
 import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 import 'date-utils';
@@ -68,6 +70,12 @@ class Map extends React.Component {
   gotoElementScreen = (lodgingFacilitie) => {
     data = lodgingFacilitie;
     this.setState({ isOpen: true });
+  }
+
+  detailScreen = () => {
+    const { navigation } = this.props;
+    navigation.navigate('DetailScreen');
+    console.log(data);
   }
 
   // 観光地取得
@@ -204,12 +212,6 @@ class Map extends React.Component {
     timeData = now.toFormat('YYYYMMDD');
   }
 
-  // 次の画面へ遷移します
-  // eslint-disable-next-line class-methods-use-this
-  detailScreen() {
-    console.log(data);
-  }
-
   render() {
     const { lodgingFacilities, touristFacilities, isOpen } = this.state;
     return (
@@ -232,8 +234,6 @@ class Map extends React.Component {
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
-              // const { navigation } = this.props;
-              // navigation.setParams({ lodging: lodgingFacilitie });
               let title = '値段';
               if (lodgingFacilitie.HotelID !== undefined) {
                 title = lodgingFacilitie.PlanSampleRateFrom;
@@ -274,8 +274,6 @@ class Map extends React.Component {
           {
             // 観光施設にピンを配置
             touristFacilities.map((touristFacilitie) => {
-              // const { navigation } = this.props;
-              // navigation.setParams({ tourist: touristFacilitie });
               let title = '観光地名';
               if (touristFacilitie.id !== undefined) {
                 title = touristFacilitie.name;
@@ -300,4 +298,10 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+Map.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+export default withNavigation(Map);
