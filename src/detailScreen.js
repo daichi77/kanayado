@@ -100,6 +100,8 @@ class secondDetial extends React.Component {
   }
 
   render() {
+    const { navigation } = this.props;
+    const { params } = navigation.state;
     return (
       <View style={styles.container}>
         <View style={styles.header} />
@@ -110,7 +112,7 @@ class secondDetial extends React.Component {
         <View style={styles.Line} />
 
         <View style={styles.HotelName}>
-          <Text style={styles.HotelNameText}>ホテルの名前</Text>
+          <Text style={styles.HotelNameText}>{ params.hotelName }</Text>
         </View>
 
         <View style={styles.Line} />

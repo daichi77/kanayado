@@ -74,7 +74,9 @@ class Map extends React.Component {
 
   detailScreen = () => {
     const { navigation } = this.props;
-    navigation.navigate('DetailScreen');
+    navigation.navigate('DetailScreen', {
+      hotelName: data.HotelName,
+    });
     console.log(data);
   }
 
