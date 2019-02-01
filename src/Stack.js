@@ -4,10 +4,12 @@ import HeaderLeft from './headerLeft';
 import HeaderRight from './headerRight';
 import Map from './Map';
 import MapDist from './mapDist';
+import Detail from './detailScreen';
 
 const Stack = createStackNavigator({
-  MainScreen: { screen: Map, key: '1234' },
+  MainScreen: { screen: Map },
   Dist: { screen: MapDist },
+  DetailScreen: { screen: Detail },
 }, {
   defaultNavigationOptions: {
     title: '現在地',
