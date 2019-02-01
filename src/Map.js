@@ -232,6 +232,8 @@ class Map extends React.Component {
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
+              // const { navigation } = this.props;
+              // navigation.setParams({ lodging: lodgingFacilitie });
               let title = '値段';
               if (lodgingFacilitie.HotelID !== undefined) {
                 title = lodgingFacilitie.PlanSampleRateFrom;
@@ -272,6 +274,8 @@ class Map extends React.Component {
           {
             // 観光施設にピンを配置
             touristFacilities.map((touristFacilitie) => {
+              // const { navigation } = this.props;
+              // navigation.setParams({ tourist: touristFacilitie });
               let title = '観光地名';
               if (touristFacilitie.id !== undefined) {
                 title = touristFacilitie.name;
