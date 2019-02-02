@@ -74,8 +74,13 @@ class Map extends React.Component {
 
   detailScreen = () => {
     const { navigation } = this.props;
-    navigation.navigate('DetailScreen');
-    console.log(data);
+    navigation.navigate('DetailScreen', {
+      hotelName: data.HotelName,
+      hotelAddress: data.HotelAddress,
+      pictureURL: data.PictureURL,
+      planSampleRateFrom: data.PlanSampleRateFrom,
+      hotelUrl: data.HotelUrl,
+    });
   }
 
   // 観光地取得
@@ -113,6 +118,8 @@ class Map extends React.Component {
             let pictureURL = '';
             const hotelId = hotels[i].getElementsByTagName('HotelID')[0].textContent;
             const hotelName = hotels[i].getElementsByTagName('HotelName')[0].textContent;
+            const hotelAddress = hotels[i].getElementsByTagName('HotelAddress')[0].textContent;
+            const hotelURL = hotels[i].getElementsByTagName('HotelDetailURL')[0].textContent;
             const planSampleRateFrom = hotels[i].getElementsByTagName('SampleRateFrom')[0].textContent;
             if (hotels[i].getElementsByTagName('PictureURL')[0] !== undefined) {
               pictureURL = hotels[i].getElementsByTagName('PictureURL')[0].textContent;
@@ -125,8 +132,10 @@ class Map extends React.Component {
             hotelData[i] = {
               HotelID: hotelId,
               HotelName: hotelName,
+              HotelAddress: hotelAddress,
               PlanSampleRateFrom: planSampleRateFrom,
               PictureURL: pictureURL,
+              HotelUrl: hotelURL,
               X: wx,
               Y: wy,
               State: 'noVacancy',
@@ -167,6 +176,8 @@ class Map extends React.Component {
             const hotelId = hotels[i].getElementsByTagName('HotelID')[0].textContent;
             const hotelName = hotels[i].getElementsByTagName('HotelName')[0].textContent;
             const sampleRate = hotels[i].getElementsByTagName('SampleRate')[0].textContent;
+            const hotelAddress = hotels[i].getElementsByTagName('HotelAddress')[0].textContent;
+            const hotelURL = hotels[i].getElementsByTagName('HotelDetailURL')[0].textContent;
             if (hotels[i].getElementsByTagName('PictureURL')[0] !== undefined) {
               pictureURL = hotels[i].getElementsByTagName('PictureURL')[0].textContent;
             }
@@ -179,6 +190,8 @@ class Map extends React.Component {
               HotelID: hotelId,
               HotelName: hotelName,
               PlanSampleRateFrom: sampleRate,
+              HotelAddress: hotelAddress,
+              HotelUrl: hotelURL,
               PictureURL: pictureURL,
               X: wx,
               Y: wy,

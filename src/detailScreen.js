@@ -4,40 +4,33 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Alert,
+  Image,
 } from 'react-native';
+import { withNavigation } from 'react-navigation';
+
 
 const styles = StyleSheet.create({
   container: {
     height: '100%',
   },
-  header: {
-    backgroundColor: '#0000FF',
-    height: '3%',
-  },
-  image: {
-    flex: 3,
-    backgroundColor: 'red',
-  },
   Line: {
     borderBottomWidth: 2.0,
     borderBottomColor: 'gray',
+  },
+  image: {
+    flex: 3,
   },
   HotelName: {
     flex: 1,
     alignItems: 'center',
   },
   HotelNameText: {
-    fontSize: 50,
+    fontSize: 30,
     marginTop: 20,
   },
   CallReserve: {
     flex: 1,
     flexDirection: 'row',
-  },
-  Call: {
-    flex: 1,
-    alignItems: 'center',
   },
   Reserve: {
     flex: 1,
@@ -49,10 +42,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 22,
     padding: 5,
-  },
-  callButtonText: {
-    fontSize: 30,
-    color: 'black',
   },
   reserveButtonText: {
     fontSize: 30,
@@ -91,38 +80,39 @@ const styles = StyleSheet.create({
 });
 
 class secondDetial extends React.Component {
-  onPressCallButton = () => {
-    Alert.alert('You tapped the button!');
-  }
-
-  onPressReserveButton = () => {
-    Alert.alert('You tapped the button');
+  Hotelweb = (url) => {
+    const { navigation } = this.props;
+    navigation.navigate('HotelWeb', {
+      hotelUrl: url,
+    });
+    console.log(url);
   }
 
   render() {
+    const { navigation } = this.props;
+    const { params } = navigation.state;
+    const url = params.hotelUrl;
+    console.log(params.hotelUrl);
     return (
       <View style={styles.container}>
-        <View style={styles.header} />
-
-
-        <View style={styles.image} />
+        <View style={styles.image}>
+          <Image
+            style={{flex: 3}}
+            source={{ uri: params.pictureURL }}
+          />
+        </View>
 
         <View style={styles.Line} />
 
         <View style={styles.HotelName}>
-          <Text style={styles.HotelNameText}>ホテルの名前</Text>
+          <Text style={styles.HotelNameText}>{ params.hotelName }</Text>
         </View>
 
         <View style={styles.Line} />
 
         <View style={styles.CallReserve}>
-          <View style={styles.Call}>
-            <TouchableOpacity onPress={this.onPressCallButton} style={styles.button}>
-              <Text style={styles.callButtonText}>電話予約</Text>
-            </TouchableOpacity>
-          </View>
           <View style={styles.Reserve}>
-            <TouchableOpacity onPress={this.onPressReserveButton} style={styles.button}>
+            <TouchableOpacity onPress={() => this.Hotelweb(url)} style={styles.button}>
               <Text style={styles.reserveButtonText}>ネット予約</Text>
             </TouchableOpacity>
           </View>
@@ -135,7 +125,7 @@ class secondDetial extends React.Component {
             <Text style={styles.PriceText}>料金</Text>
           </View>
           <View style={styles.PriceScreen}>
-            <Text style={styles.PriceText}>¥2800</Text>
+            <Text style={styles.PriceText}>{ params.planSampleRateFrom }円</Text>
           </View>
         </View>
 
@@ -144,7 +134,7 @@ class secondDetial extends React.Component {
         <View style={styles.Home}>
           <Text style={styles.homeText}>住所</Text>
           <View style={styles.homeAddress}>
-            <Text style={styles.homeAddressText}>〒921-8822 石川県野々市市矢作３丁目２６</Text>
+            <Text style={styles.homeAddressText}>{ params.hotelAddress}</Text>
           </View>
         </View>
       </View>
@@ -152,4 +142,4 @@ class secondDetial extends React.Component {
   }
 }
 
-export default secondDetial;
+export default withNavigation(secondDetial);
