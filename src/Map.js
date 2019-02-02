@@ -270,11 +270,11 @@ class Map extends React.Component {
           // 現在住所(少数第７位まで)
           // 36.5289133 15
           // 136.6285175  120
-          latitude: this.state.lat , // 緯度
-          longitude: this.state.lon , // 経度
-          // ズーム
-          latitudeDelta: 0.010,
-          longitudeDelta: 0.010,
+            latitude: this.state.lat, // 緯度
+            longitude: this.state.lon, // 経度
+            // ズーム
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
           }}
         >
           {
