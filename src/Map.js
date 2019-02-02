@@ -6,7 +6,6 @@ import { Location, Permissions } from 'expo';
 import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 import 'date-utils';
-import { Location, Permissions } from 'expo';
 
 let hotelsData = [];
 let vacancysData = [];
