@@ -27,14 +27,14 @@ const styles = StyleSheet.create({
   },
 });
 
-// 観光データの配列
+// 観光データ（page1およびpage2）
 let kankoudata = [];
 
 class DrawerCustom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalkankoudata: null,
+      totalkankoudata: [],
       filterText: '',
     };
   }
