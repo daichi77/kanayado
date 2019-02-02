@@ -69,7 +69,6 @@ class Map extends React.Component {
 
   // 現在地取得
   getLocationAsync = async () => {
-
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
       this.setState({
@@ -276,6 +275,14 @@ class Map extends React.Component {
             longitudeDelta: 0.005,
           }}
         >
+        <MapView.Marker
+          coordinate={{latitude: this.state.lat,
+          longitude: this.state.lon}}
+          title={"現在地"}
+          description={"現在地はここです"}
+          image={touristSpotMarkerImg}
+        />
+
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
