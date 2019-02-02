@@ -27,26 +27,46 @@ const styles = StyleSheet.create({
   },
 });
 
+// 観光データの配列
+let kankoudata = [];
+
 class DrawerCustom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      kankoudata: null,
+      totalkankoudata: null,
       filterText: '',
     };
   }
 
   componentWillMount() {
-    this.getSpot();
+    this.getSpottoPage1();
+    this.getSpottoPage2();
   }
 
   keyExtractor = item => item.id;
 
-  getSpot = () => {
-    fetch('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1')
+  // 観光データ(page1)の取得
+  getSpottoPage1 = () => {
+    fetch(
+      'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1',
+    )
       .then(response => response.json())
       .then((responseJson) => {
-        this.setState({ kankoudata: responseJson.facilities });
+        // グローバル変数kankoudataに格納
+        kankoudata = responseJson.facilities;
+      });
+  };
+
+  // 観光データ(page2)の取得
+  getSpottoPage2 = () => {
+    fetch(
+      'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=2&count=50&area=1&genre=1',
+    )
+      .then(response => response.json())
+      .then((responseJson) => {
+        // グローバル変数kankoudataに要素を結合
+        kankoudata = kankoudata.concat(responseJson.facilities);
       });
   };
 
@@ -54,14 +74,15 @@ class DrawerCustom extends React.Component {
     this.setState({
       filterText: text,
     });
-  }
+  };
 
   render() {
     const { navigation } = this.props;
     const { filterText } = this.state;
-    let { kankoudata } = this.state;
+    let { totalkankoudata } = this.state;
+    totalkankoudata = kankoudata;
     if (filterText !== '') {
-      kankoudata = kankoudata.filter(t => t.name.includes(filterText));
+      totalkankoudata = totalkankoudata.filter(t => t.name.includes(filterText));
     }
     return (
       <SafeAreaView>
@@ -76,12 +97,14 @@ class DrawerCustom extends React.Component {
             style={styles.icon}
           />
           <SearchBar
-            includeFilter={(text) => { this.setFilter(text); }}
+            includeFilter={(text) => {
+              this.setFilter(text);
+            }}
           />
         </View>
         <ScrollView>
           <FlatList
-            data={kankoudata}
+            data={totalkankoudata}
             keyExtractor={this.keyExtractor}
             renderItem={({ item }) => (
               <View style={styles.kankouview}>
@@ -95,8 +118,7 @@ class DrawerCustom extends React.Component {
                   {item.name}
                 </Text>
               </View>
-            )
-            }
+            )}
           />
         </ScrollView>
       </SafeAreaView>
