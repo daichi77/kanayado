@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
+import { Location, Permissions } from 'expo';
 import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 import 'date-utils';
