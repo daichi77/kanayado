@@ -14,8 +14,6 @@ let touristSpotData = [];
 let data = [];
 let start1 = 1;
 let start2 = 1;
-let lat = 0;
-let lon = 0;
 const jalanKey = 'and16735d417c1';
 let timeData = 0;
 
@@ -57,6 +55,8 @@ class Map extends React.Component {
       lodgingFacilities: [],
       isOpen: false,
       locationResult: null,
+      lat: 100,
+      lon: 0,
     };
   }
 
@@ -69,6 +69,7 @@ class Map extends React.Component {
 
   // 現在地取得
   getLocationAsync = async () => {
+
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
       this.setState({
@@ -78,13 +79,10 @@ class Map extends React.Component {
 
     const location = await Location.getCurrentPositionAsync({});
     this.setState({ locationResult: JSON.stringify(location) });
-    lat = location.coords.latitude;
-    lon = location.coords.longitude;
-    lat = lat.toFixed(7);
-    lon = lon.toFixed(7);
+    this.setState({ lat: Number(location.coords.latitude.toFixed(7)) });
+    this.setState({ lon: Number(location.coords.longitude.toFixed(7)) });
     console.log('getLocationAsync関数内：');
-    console.log(lat);
-    console.log(lon);
+    console.log(location.coords.latitude.toFixed(7));    // 36.5288961
   };
 
   toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }))
@@ -235,10 +233,22 @@ class Map extends React.Component {
   }
 
   render() {
-    console.log('render内：');
-    console.log(lat);
-    console.log(lon);
+    console.log('render関数内：');
+    console.log(Number(this.state.lat));
+    console.log('render関数内 NUmber変換なし：');
+    console.log(this.state.lon);
+    console.log('render内型判定');
+    console.log(typeof this.state.lat);
+    console.log(typeof this.state.lon);
     const { lodgingFacilities, touristFacilities, isOpen } = this.state;
+
+    // let region = {
+    //   latitude: this.state.lat,
+    //   longitude: this.state.lon,
+    //   latitudeDelta: 0.00922,
+    //   longitudeDelta: 0.00421,
+    // };
+
     return (
       <View style={styles.container}>
         <Modal
@@ -249,18 +259,23 @@ class Map extends React.Component {
         />
         <MapView
           style={styles.mapview}
-          initialRegion={{
-            // 現在住所(少数第７位まで)
-            // 36.5289133
-            // 136.6285175
-            latitude: lat , // 緯度
-            longitude: lon , // 経度
-            // ズーム
-            latitudeDelta: 0.00922,
-            longitudeDelta: 0.00521,
+
+          // regionで管理する。
+          // onRegionChange={region}
+          // onRegionChange={this.onRegionChange}
+
+          // 初回読み込み時に描画
+          region={{
+          // 現在住所(少数第７位まで)
+          // 36.5289133 15
+          // 136.6285175  120
+          latitude: this.state.lat , // 緯度
+          longitude: this.state.lon , // 経度
+          // ズーム
+          latitudeDelta: 0.0422,
+          longitudeDelta: 0.0421,
           }}
         >
-
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
