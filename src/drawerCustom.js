@@ -88,8 +88,13 @@ class DrawerCustom extends React.Component {
                 <Text
                   style={styles.kankoutext}
                   onPress={() => {
+                    const inf = navigation.state.params;
                     navigation.closeDrawer();
-                    navigation.navigate('Dist', { dist: item });
+                    inf.animateToRegion({
+                      latitude: 36.5767852,
+                      longitude: 136.6501281,
+                    }, 1000);
+                    // navigation.navigate('Dist', { dist: item });
                   }}
                 >
                   {item.name}

@@ -1,7 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+} from 'react-native';
 import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
+import { withNavigation } from 'react-navigation';
 import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 import 'date-utils';
@@ -68,6 +74,9 @@ class Map extends React.Component {
   gotoElementScreen = (lodgingFacilitie) => {
     data = lodgingFacilitie;
     this.setState({ isOpen: true });
+    const { navigation } = this.props;
+    const mapViewinf = this.mapView;
+    navigation.setParams({ inf: mapViewinf });
   }
 
   // 観光地取得
@@ -221,6 +230,7 @@ class Map extends React.Component {
           detailScreen={this.detailScreen}
         />
         <MapView
+          ref={ref => { this.mapView = ref }}
           style={styles.mapview}
           initialRegion={{
             latitude: 36.5780818,
@@ -229,6 +239,15 @@ class Map extends React.Component {
             longitudeDelta: 0.00521,
           }}
         >
+          <Button
+            title="Decrypt Data"
+            color="orange"
+            accessibilityLabel="Tap to Decrypt Data"
+            onPress={() => this.mapView.animateToRegion({
+              latitude: 36.5767852,
+              longitude: 136.6501281,
+            }, 1000)}
+          />
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
@@ -300,4 +319,4 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+export default withNavigation(Map);
