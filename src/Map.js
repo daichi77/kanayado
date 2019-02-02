@@ -272,8 +272,8 @@ class Map extends React.Component {
           latitude: this.state.lat , // 緯度
           longitude: this.state.lon , // 経度
           // ズーム
-          latitudeDelta: 0.0422,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.010,
+          longitudeDelta: 0.010,
           }}
         >
           {
