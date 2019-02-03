@@ -16,6 +16,7 @@
     "expo-cli": "^2.6.5",
     "prop-types": "^15.6.2",
     "react": "16.3.1",
+    "react-devtools": "^3.6.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-elements": "^0.19.1",
     "react-native-maps": "^0.22.1",
