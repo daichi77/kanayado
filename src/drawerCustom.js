@@ -27,9 +27,8 @@ const styles = StyleSheet.create({
   },
 });
 
-// 金沢の観光データのAPI(page1,page2)
-const kanazawaUrlPage1 = 'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1';
-const kanazawaUrlPage2 = 'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=2&count=50&area=1&genre=1';
+// 金沢の観光データのAPI
+const kanazawaUrl = 'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1';
 
 class DrawerCustom extends React.Component {
   constructor(props) {
@@ -41,8 +40,7 @@ class DrawerCustom extends React.Component {
   }
 
   componentWillMount() {
-    this.getSpot(kanazawaUrlPage1);
-    this.getSpot(kanazawaUrlPage2);
+    this.getSpot(kanazawaUrl);
   }
 
   keyExtractor = item => item.id;
@@ -54,6 +52,9 @@ class DrawerCustom extends React.Component {
       .then((responseJson) => {
         const getKankouData = responseJson.facilities;
         this.setState(prevState => ({ kankouData: prevState.kankouData.concat(getKankouData) }));
+        if (responseJson.next_page !== undefined) {
+          this.getSpot(responseJson.next_page);
+        }
       });
   };
 
