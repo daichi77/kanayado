@@ -35,7 +35,7 @@ class DrawerCustom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      kankoudata: [],
+      kankouData: [],
       filterText: '',
     };
   }
@@ -53,7 +53,7 @@ class DrawerCustom extends React.Component {
       .then(response => response.json())
       .then((responseJson) => {
         const getKankouData = responseJson.facilities;
-        this.setState(prevState => ({ kankoudata: prevState.kankoudata.concat(getKankouData) }));
+        this.setState(prevState => ({ kankouData: prevState.kankouData.concat(getKankouData) }));
       });
   };
 
@@ -66,9 +66,9 @@ class DrawerCustom extends React.Component {
   render() {
     const { navigation } = this.props;
     const { filterText } = this.state;
-    let { kankoudata } = this.state;
+    let { kankouData } = this.state;
     if (filterText !== '') {
-      kankoudata = kankoudata.filter(t => t.name.includes(filterText));
+      kankouData = kankouData.filter(t => t.name.includes(filterText));
     }
     return (
       <SafeAreaView>
@@ -90,7 +90,7 @@ class DrawerCustom extends React.Component {
         </View>
         <ScrollView>
           <FlatList
-            data={kankoudata}
+            data={kankouData}
             keyExtractor={this.keyExtractor}
             renderItem={({ item }) => (
               <View style={styles.kankouview}>
