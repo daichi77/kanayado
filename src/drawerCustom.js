@@ -27,46 +27,33 @@ const styles = StyleSheet.create({
   },
 });
 
-// 観光データ（page1およびpage2）
-let kankoudata = [];
+// 金沢の観光データのAPI(page1,page2)
+const kanazawaUrlPage1 = 'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1';
+const kanazawaUrlPage2 = 'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=2&count=50&area=1&genre=1';
 
 class DrawerCustom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalkankoudata: [],
+      kankoudata: [],
       filterText: '',
     };
   }
 
   componentWillMount() {
-    this.getSpottoPage1();
-    this.getSpottoPage2();
+    this.getSpot(kanazawaUrlPage1);
+    this.getSpot(kanazawaUrlPage2);
   }
 
   keyExtractor = item => item.id;
 
-  // 観光データ(page1)の取得
-  getSpottoPage1 = () => {
-    fetch(
-      'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1',
-    )
+  // 観光データ取得メソッド
+  getSpot = (url) => {
+    fetch(url)
       .then(response => response.json())
       .then((responseJson) => {
-        // グローバル変数kankoudataに格納
-        kankoudata = responseJson.facilities;
-      });
-  };
-
-  // 観光データ(page2)の取得
-  getSpottoPage2 = () => {
-    fetch(
-      'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=2&count=50&area=1&genre=1',
-    )
-      .then(response => response.json())
-      .then((responseJson) => {
-        // グローバル変数kankoudataに要素を結合
-        kankoudata = kankoudata.concat(responseJson.facilities);
+        const getKankouData = responseJson.facilities;
+        this.setState(prevState => ({ kankoudata: prevState.kankoudata.concat(getKankouData) }));
       });
   };
 
@@ -79,10 +66,9 @@ class DrawerCustom extends React.Component {
   render() {
     const { navigation } = this.props;
     const { filterText } = this.state;
-    let { totalkankoudata } = this.state;
-    totalkankoudata = kankoudata;
+    let { kankoudata } = this.state;
     if (filterText !== '') {
-      totalkankoudata = totalkankoudata.filter(t => t.name.includes(filterText));
+      kankoudata = kankoudata.filter(t => t.name.includes(filterText));
     }
     return (
       <SafeAreaView>
@@ -104,7 +90,7 @@ class DrawerCustom extends React.Component {
         </View>
         <ScrollView>
           <FlatList
-            data={totalkankoudata}
+            data={kankoudata}
             keyExtractor={this.keyExtractor}
             renderItem={({ item }) => (
               <View style={styles.kankouview}>
