@@ -27,26 +27,34 @@ const styles = StyleSheet.create({
   },
 });
 
+// 金沢の観光データのAPI
+const kanazawaUrl = 'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1';
+
 class DrawerCustom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      kankoudata: null,
+      kankouData: [],
       filterText: '',
     };
   }
 
   componentWillMount() {
-    this.getSpot();
+    this.getSpot(kanazawaUrl);
   }
 
   keyExtractor = item => item.id;
 
-  getSpot = () => {
-    fetch('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1')
+  // 観光データ取得メソッド
+  getSpot = (url) => {
+    fetch(url)
       .then(response => response.json())
       .then((responseJson) => {
-        this.setState({ kankoudata: responseJson.facilities });
+        const getKankouData = responseJson.facilities;
+        this.setState(prevState => ({ kankouData: prevState.kankouData.concat(getKankouData) }));
+        if (responseJson.next_page !== undefined) {
+          this.getSpot(responseJson.next_page);
+        }
       });
   };
 
@@ -54,14 +62,14 @@ class DrawerCustom extends React.Component {
     this.setState({
       filterText: text,
     });
-  }
+  };
 
   render() {
     const { navigation } = this.props;
     const { filterText } = this.state;
-    let { kankoudata } = this.state;
+    let { kankouData } = this.state;
     if (filterText !== '') {
-      kankoudata = kankoudata.filter(t => t.name.includes(filterText));
+      kankouData = kankouData.filter(t => t.name.includes(filterText));
     }
     return (
       <SafeAreaView>
@@ -76,12 +84,14 @@ class DrawerCustom extends React.Component {
             style={styles.icon}
           />
           <SearchBar
-            includeFilter={(text) => { this.setFilter(text); }}
+            includeFilter={(text) => {
+              this.setFilter(text);
+            }}
           />
         </View>
         <ScrollView>
           <FlatList
-            data={kankoudata}
+            data={kankouData}
             keyExtractor={this.keyExtractor}
             renderItem={({ item }) => (
               <View style={styles.kankouview}>
@@ -95,8 +105,7 @@ class DrawerCustom extends React.Component {
                   {item.name}
                 </Text>
               </View>
-            )
-            }
+            )}
           />
         </ScrollView>
       </SafeAreaView>
