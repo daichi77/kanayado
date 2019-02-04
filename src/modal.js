@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
 });
 
 const ModalScreen = ({
-  // eslint-disable-next-line react/prop-types
   isOpen, toggleIsOpen, data, detailScreen,
 }) => (
   <Modal
@@ -134,6 +133,9 @@ ModalScreen.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggleIsOpen: PropTypes.func.isRequired,
   detailScreen: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    data: PropTypes.object,
+  }).isRequired,
 };
 
 export default ModalScreen;
