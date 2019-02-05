@@ -7,25 +7,26 @@ export default class DateTimePickerTester extends Component {
     isDateTimePickerVisible: false,
   };
 
-  _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+  showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
-  _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+  hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
-  _handleDatePicked = (date) => {
+  handleDatePicked = (date) => {
     console.log('A date has been picked: ', date);
-    this._hideDateTimePicker();
+    this.hideDateTimePicker();
   };
 
-  render () {
+  render() {
+    const { isDateTimePickerVisible } = this.state;
     return (
       <View style={{ flex: 1 }}>
-        <TouchableOpacity onPress={this._showDateTimePicker}>
+        <TouchableOpacity onPress={this.showDateTimePicker}>
           <Text>Show DatePicker</Text>
         </TouchableOpacity>
         <DateTimePicker
-          isVisible={this.state.isDateTimePickerVisible}
-          onConfirm={this._handleDatePicked}
-          onCancel={this._hideDateTimePicker}
+          isVisible={isDateTimePickerVisible}
+          onConfirm={this.handleDatePicked}
+          onCancel={this.hideDateTimePicker}
         />
       </View>
     );
