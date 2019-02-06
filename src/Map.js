@@ -5,6 +5,7 @@ import { DOMParser } from 'xmldom';
 import { Location, Permissions } from 'expo';
 import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
+import currentPlaceImg from '../assets/currentPlace.png';
 import 'date-utils';
 
 let hotelsData = [];
@@ -276,13 +277,13 @@ class Map extends React.Component {
           }}
         >
         <MapView.Marker
+          // 現在地にピンを配置
           coordinate={{latitude: this.state.lat,
           longitude: this.state.lon}}
           title={"現在地"}
-          description={"現在地はここです"}
-          image={touristSpotMarkerImg}
+          // description={"現在地はここです"}
+          image={currentPlaceImg}
         />
-
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
