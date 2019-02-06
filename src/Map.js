@@ -5,7 +5,7 @@ import { DOMParser } from 'xmldom';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import Modal from './modal';
-import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
+import touristSpotMarkerImg from '../assets/location.png';
 import 'date-utils';
 
 
