@@ -57,6 +57,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const noPhotoImg = require('../assets/noPhoto.png');
+
 const ModalScreen = ({
   isOpen, toggleIsOpen, data, detailScreen,
 }) => (
@@ -70,7 +72,7 @@ const ModalScreen = ({
     <View style={styles.horizontal}>
       <View style={{ width: '40%', height: '100%' }}>
         <Image
-          source={{ uri: data.PictureURL }}
+          source={data.PictureURL === '' ? noPhotoImg : { uri: data.PictureURL }}
           style={{ width: '100%', height: '100%' }}
         />
       </View>
