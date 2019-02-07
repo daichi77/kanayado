@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView from 'react-native-maps-super-cluster';
+import { Marker } from 'react-native-maps';
 import { DOMParser } from 'xmldom';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#FFF',
+    fontSize: 12,
     fontWeight: 'bold',
   },
   text1: {
@@ -66,6 +68,21 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginRight: 5,
     fontWeight: 'bold',
+  },
+  counterText: {
+    fontSize: 12,
+    color: '#04B431',
+    fontWeight: 'bold',
+  },
+  clusterContainer: {
+    width: 24,
+    height: 24,
+    borderWidth: 2,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderColor: '#04B431',
+    justifyContent: 'center',
+    backgroundColor: '#FFF',
   },
 });
 
@@ -247,8 +264,50 @@ class Map extends React.Component {
     timeData = now.toFormat('YYYYMMDD');
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  _convertPoints(data1) {
+    const results = {
+      type: 'MapCollection',
+      features: [],
+    };
+    // eslint-disable-next-line array-callback-return
+    data1.map((value) => {
+      // eslint-disable-next-line no-undef
+      array = {
+        value,
+        location: {
+          latitude: value.coordinates.latitude,
+          longitude: value.coordinates.longitude,
+        },
+      };
+      // eslint-disable-next-line no-undef
+      results.features.push(array);
+    });
+    return results.features;
+  }
+
+  renderMarker = pin => (
+    <Marker
+      key={pin.value.id}
+      coordinate={pin.location}
+      image={touristSpotMarkerImg}
+      title={pin.value.name}
+    />
+  )
+
+  renderCluster = (cluster, onPress) => (
+    <Marker coordinate={cluster.coordinate} onPress={onPress}>
+      <View style={styles.clusterContainer}>
+        <Text style={styles.counterText}>
+          {cluster.pointCount}
+        </Text>
+      </View>
+    </Marker>
+  )
+
   render() {
     const { lodgingFacilities, touristFacilities, isOpen } = this.state;
+    const data1 = this._convertPoints(touristFacilities);
     return (
       <View style={styles.container}>
         <Modal
@@ -259,6 +318,10 @@ class Map extends React.Component {
         />
         <MapView
           style={styles.mapview}
+          data={data1}
+          animateClusters={false}
+          renderMarker={this.renderMarker}
+          renderCluster={this.renderCluster}
           initialRegion={{
             latitude: 36.5780818,
             longitude: 136.6478206,
@@ -280,7 +343,7 @@ class Map extends React.Component {
                 title = lodgingFacilitie.PlanSampleRateFrom;
               }
               return (
-                <MapView.Marker
+                <Marker
                   coordinate={{
                     latitude: lodgingFacilitie.Y,
                     longitude: lodgingFacilitie.X,
@@ -293,30 +356,9 @@ class Map extends React.Component {
                       {title}
                     </Text>
                   </View>
-                </MapView.Marker>);
+                </Marker>);
             })
           }
-          {
-            // 観光施設にピンを配置
-            touristFacilities.map((touristFacilitie) => {
-              let title = '観光地名';
-              if (touristFacilitie.id !== undefined) {
-                title = touristFacilitie.name;
-              }
-              return (
-                <MapView.Marker
-                  coordinate={{
-                    latitude: touristFacilitie.coordinates.latitude,
-                    longitude: touristFacilitie.coordinates.longitude,
-                  }}
-                  title={title}
-                  key={touristFacilitie.id}
-                  image={touristSpotMarkerImg}
-                />
-              );
-            })
-          }
-
         </MapView>
       </View>
     );
