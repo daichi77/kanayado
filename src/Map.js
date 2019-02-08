@@ -1,11 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import {
+  StyleSheet, View, Text, Image, TouchableOpacity,
+} from 'react-native';
 import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
 import { Location, Permissions } from 'expo';
 import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 import currentPlaceImg from '../assets/currentPlace.png';
+import toPlaceImg from '../assets/place.png';
 import 'date-utils';
 
 let hotelsData = [];
@@ -43,6 +46,10 @@ const styles = StyleSheet.create({
   text: {
     color: '#FFF',
     fontWeight: 'bold',
+  },
+  image: {
+    width: 150,
+    height: 150,
   },
 });
 
@@ -82,7 +89,7 @@ class Map extends React.Component {
     this.setState({ lat: Number(location.coords.latitude.toFixed(7)) });
     this.setState({ lon: Number(location.coords.longitude.toFixed(7)) });
     console.log('getLocationAsync関数内：');
-    console.log(location.coords.latitude.toFixed(7));    // 36.5288961
+    console.log(location.coords.latitude.toFixed(7)); // 36.5288961
   };
 
   toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }))
@@ -90,6 +97,9 @@ class Map extends React.Component {
   gotoElementScreen = (lodgingFacilitie) => {
     data = lodgingFacilitie;
     this.setState({ isOpen: true });
+    const { navigation } = this.props;
+    const mapViewinf = this.mapView;
+    navigation.setParams({ inf: mapViewinf });
   }
 
   // 観光地取得
@@ -242,14 +252,8 @@ class Map extends React.Component {
     console.log(typeof this.state.lon);
     const { lodgingFacilities, touristFacilities, isOpen } = this.state;
 
-    // let region = {
-    //   latitude: this.state.lat,
-    //   longitude: this.state.lon,
-    //   latitudeDelta: 0.00922,
-    //   longitudeDelta: 0.00421,
-    // };
-
     return (
+
       <View style={styles.container}>
         <Modal
           isOpen={isOpen}
@@ -257,7 +261,9 @@ class Map extends React.Component {
           data={data}
           detailScreen={this.detailScreen}
         />
+
         <MapView
+          ref={ref => { this.mapView = ref }}
           style={styles.mapview}
 
           // regionで管理する。
@@ -276,14 +282,28 @@ class Map extends React.Component {
             longitudeDelta: 0.005,
           }}
         >
-        <MapView.Marker
+          <TouchableOpacity
+            onPress={() => this.mapView.animateToRegion({
+              latitude: this.state.lat,
+              longitude: this.state.lon,
+            }, 1000)}
+          >
+            <Image
+              style={styles.image}
+              source={require('../assets/place.png')}
+            />
+          </TouchableOpacity>
+
+          <MapView.Marker
           // 現在地にピンを配置
-          coordinate={{latitude: this.state.lat,
-          longitude: this.state.lon}}
-          title={"現在地"}
+            coordinate={{
+              latitude: this.state.lat,
+              longitude: this.state.lon,
+            }}
+            title="現在地"
           // description={"現在地はここです"}
-          image={currentPlaceImg}
-        />
+            image={currentPlaceImg}
+          />
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
