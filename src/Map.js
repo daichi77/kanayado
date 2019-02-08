@@ -265,7 +265,7 @@ class Map extends React.Component {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  _convertPoints(data1) {
+  convertPoints(data1) {
     const results = {
       type: 'MapCollection',
       features: [],
@@ -307,7 +307,7 @@ class Map extends React.Component {
 
   render() {
     const { lodgingFacilities, touristFacilities, isOpen } = this.state;
-    const data1 = this._convertPoints(touristFacilities);
+    const data1 = this.convertPoints(touristFacilities);
     return (
       <View style={styles.container}>
         <Modal
