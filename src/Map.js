@@ -5,7 +5,7 @@ import { DOMParser } from 'xmldom';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import Modal from './modal';
-import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
+import touristSpotMarkerImg from '../assets/location.png';
 import 'date-utils';
 
 
@@ -31,18 +31,40 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 
-  marker: {
+  mark_red: {
+    width: 15,
+    height: 15,
+    marginTop: 5,
+    marginRight: 2,
+    backgroundColor: 'red',
+    borderRadius: 10,
+  },
+  mark_blue: {
+    width: 15,
+    height: 15,
+    marginTop: 5,
+    marginRight: 2,
+    backgroundColor: 'blue',
+    borderRadius: 10,
+  },
+  marker_red: {
     backgroundColor: 'red',
     padding: 5,
     borderRadius: 10,
   },
-  marker1: {
+  marker_blue: {
     backgroundColor: 'blue',
     padding: 5,
     borderRadius: 10,
   },
   text: {
     color: '#FFF',
+    fontWeight: 'bold',
+  },
+  text1: {
+    fontSize: 20,
+    marginTop: 2,
+    marginRight: 5,
     fontWeight: 'bold',
   },
 });
@@ -244,29 +266,18 @@ class Map extends React.Component {
             longitudeDelta: 0.00521,
           }}
         >
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <View style={styles.mark_blue} />
+            <Text style={styles.text1}>空室</Text>
+            <View style={styles.mark_red} />
+            <Text style={styles.text1}>満室</Text>
+          </View>
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
               let title = '値段';
               if (lodgingFacilitie.HotelID !== undefined) {
                 title = lodgingFacilitie.PlanSampleRateFrom;
-              }
-              if (lodgingFacilitie.State === 'noVacancy') {
-                return (
-                  <MapView.Marker
-                    coordinate={{
-                      latitude: lodgingFacilitie.Y,
-                      longitude: lodgingFacilitie.X,
-                    }}
-                    onPress={() => this.gotoElementScreen(lodgingFacilitie)}
-                    key={lodgingFacilitie.HotelID}
-                  >
-                    <View style={styles.marker}>
-                      <Text style={styles.text}>
-                        {title}
-                      </Text>
-                    </View>
-                  </MapView.Marker>);
               }
               return (
                 <MapView.Marker
@@ -277,11 +288,12 @@ class Map extends React.Component {
                   onPress={() => this.gotoElementScreen(lodgingFacilitie)}
                   key={lodgingFacilitie.HotelID}
                 >
-                  <View style={styles.marker1}>
-                    <Text style={styles.text}>{title}</Text>
+                  <View style={lodgingFacilitie.State === 'vacancy' ? styles.marker_blue : styles.marker_red}>
+                    <Text style={styles.text}>
+                      {title}
+                    </Text>
                   </View>
-                </MapView.Marker>
-              );
+                </MapView.Marker>);
             })
           }
           {
