@@ -10,11 +10,11 @@ import SearchBar from './searchBar';
 const styles = StyleSheet.create({
   searchAndIcon: {
     flexDirection: 'row',
-    marginTop: 30,
+    marginTop: 10,
   },
   icon: {
-    marginTop: 6,
-    marginLeft: 10,
+    marginTop: 10,
+    marginLeft: 5,
   },
   kankouview: {
     padding: 10,
@@ -76,7 +76,7 @@ class DrawerCustom extends React.Component {
         <View style={styles.searchAndIcon}>
           <Icon
             name="left"
-            size={35}
+            size={25}
             onPress={() => {
               navigation.closeDrawer();
               navigation.navigate('MainScreen');
