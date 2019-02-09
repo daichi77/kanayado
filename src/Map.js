@@ -8,7 +8,6 @@ import { Location, Permissions } from 'expo';
 import Modal from './modal';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 import currentPlaceImg from '../assets/currentPlace.png';
-import toPlaceImg from '../assets/place.png';
 import 'date-utils';
 
 let hotelsData = [];
@@ -48,11 +47,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    width: 150,
-    height: 150,
+    flex: 0,
+    flexDirection: 'row-reverse',
+    // justifyContent: 'center',
+    alignSelf: 'flex-end',
+    top: '134%',
+    width: 86,
+    height: 86,
   },
 });
 
+const placeRequire = require('../assets/place.png');
 
 // 関数名や変数名の修正
 class Map extends React.Component {
@@ -263,7 +268,7 @@ class Map extends React.Component {
         />
 
         <MapView
-          ref={ref => { this.mapView = ref }}
+          ref={ ref => { this.mapView = ref }}
           style={styles.mapview}
 
           // regionで管理する。
@@ -290,7 +295,7 @@ class Map extends React.Component {
           >
             <Image
               style={styles.image}
-              source={require('../assets/place.png')}
+              source={placeRequire}
             />
           </TouchableOpacity>
 
