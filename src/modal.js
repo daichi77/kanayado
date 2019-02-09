@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image,
+  StyleSheet, View, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modalbox';
 import SearchIcon1 from 'react-native-vector-icons/AntDesign';
+import { Container, Button, Text, Icon } from 'native-base';
 
 const styles = StyleSheet.create({
   modal: {
@@ -32,8 +33,8 @@ const styles = StyleSheet.create({
     marginTop: '8%',
   },
   text2: {
-    color: '#FFFFFF',
-    fontSize: 16,
+    color: '#0B0719',
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: '15%',
@@ -43,17 +44,22 @@ const styles = StyleSheet.create({
     width: '80%',
     height: '80%',
     position: 'absolute',
-    backgroundColor: '#0B610B',
     bottom: 0,
-    borderRadius: 20,
   },
   background2: {
-    width: '80%',
+    width: '85%',
     height: '80%',
     position: 'absolute',
-    backgroundColor: '#81DAF5',
+    // backgroundColor: '#81DAF5',
     bottom: 0,
-    borderRadius: 20,
+  },
+  detialbutton: {
+    borderWidth: 3.0,
+    borderColor: '#1EE514',
+    borderRadius: 10,
+    padding: 5,
+    marginRight: 18,
+    marginLeft: 'auto',
   },
 });
 
@@ -69,65 +75,63 @@ const ModalScreen = ({
     style={[styles.modal]}
     position="bottom"
   >
-    <View style={styles.horizontal}>
-      <View style={{ width: '40%', height: '100%' }}>
-        <Image
-          source={data.PictureURL === '' ? noPhotoImg : { uri: data.PictureURL }}
-          style={{ width: '100%', height: '100%' }}
-        />
-      </View>
+    <Container>
+      <View style={styles.horizontal}>
+        <View style={{ width: '40%', height: '100%' }}>
+          <Image
+            source={data.PictureURL === '' ? noPhotoImg : { uri: data.PictureURL }}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </View>
 
-      <View style={{ width: '60%', height: '100%' }}>
-        <View style={styles.vertical}>
-          <View style={{
-            width: '100%', height: '30%', borderColor: '#BDBDBD', borderStyle: 'solid', borderBottomWidth: 1, borderTopWidth: 5,
-          }}
-          >
-            <Text style={styles.text1}>{data.HotelName}</Text>
-          </View>
+        <View style={{ width: '60%', height: '100%' }}>
+          <View style={styles.vertical}>
+            <View style={{
+              width: '100%', height: '30%', borderColor: '#BDBDBD', borderStyle: 'solid', borderBottomWidth: 1, borderTopWidth: 5,
+            }}
+            > 
+              <Text style={styles.text1}>{data.HotelName}</Text>
+            </View>
 
-          <View style={{ width: '100%', height: '40%' }}>
-            <View style={styles.horizontal}>
-              <View style={{ width: '50%', height: '100%' }}>
-                <View style={styles.vertical}>
-                  <View style={styles.background1}>
-                    <Text style={styles.text2}>{data.PlanSampleRateFrom}</Text>
+            <View style={{ width: '100%', height: '40%' }}>
+              <View style={styles.horizontal}>
+                <View style={{ width: '50%', height: '100%' }}>
+                  <View style={styles.vertical}>
+                    <View style={styles.background1}>
+                      <Text style={styles.text2}>¥{data.PlanSampleRateFrom}</Text>
+                    </View>
                   </View>
                 </View>
-              </View>
 
-              <View style={{ width: '50%', height: '100%', position: 'relative' }}>
-                <View style={styles.vertical}>
-                  <View style={styles.background2}>
-                    <SearchIcon1
-                      name="arrowright"
-                      size={30}
-                      onPress={detailScreen}
-                      style={{
-                        width: '100%', height: '100%', textAlign: 'center', marginTop: '10%', color: '#FFFFFF',
-                      }}
-                    />
+                <View style={{ width: '50%', height: '100%', position: 'relative' }}>
+                  <View style={styles.vertical}>
+                    <View style={styles.background2}>
+                      <Button iconRight primary onPress={detailScreen} style={styles.detialbutton}>
+                        <Text>Next</Text>
+                        <Icon name='arrow-forward' />
+                      </Button>
+                    </View>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
 
-          <View style={{ width: '100%', height: '30%' }}>
-            <View style={styles.horizontal}>
-              <View style={{ width: '50%', height: '100%' }}>
-                <Text style={styles.text1}>価格</Text>
-              </View>
+            <View style={{ width: '100%', height: '30%' }}>
+              <View style={styles.horizontal}>
+                <View style={{ width: '50%', height: '100%' }}>
+                  <Text style={styles.text1}>価格</Text>
+                </View>
 
-              <View style={{ width: '50%', height: '100%' }}>
-                <Text style={styles.text1}>詳細</Text>
+                <View style={{ width: '50%', height: '100%' }}>
+                  <Text style={styles.text1}>詳細</Text>
+                </View>
               </View>
             </View>
-          </View>
 
+          </View>
         </View>
       </View>
-    </View>
+    </Container>
   </Modal>
 );
 
