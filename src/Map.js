@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
 import Modal from './modal';
+import global from './global';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
 import 'date-utils';
 
@@ -76,6 +77,7 @@ class Map extends React.Component {
       const response = await fetch(url);
       const json = await response.json();
       touristSpotData = touristSpotData.concat(json.facilities);
+      global.touristF = global.touristF.concat(json.facilities);
       if (json.next_page !== undefined) {
         this.touristSpot(json.next_page);
       } else {
@@ -188,6 +190,7 @@ class Map extends React.Component {
           vacancysData = vacancysData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
           // 空室データと宿泊施設データを結合し、重複したIDを削除(空室データが優先して残る)
           lodgingSpotData = vacancysData.concat(hotelsData);
+          global.lodgingF = global.lodgingF.concat(hotelsData);
           lodgingSpotData = lodgingSpotData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
           this.setState({ lodgingFacilities: lodgingSpotData });
         }
