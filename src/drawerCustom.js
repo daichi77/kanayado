@@ -16,12 +16,12 @@ const styles = StyleSheet.create({
     marginTop: 6,
     marginLeft: 10,
   },
-  kankouview: {
+  kankouView: {
     padding: 10,
     borderStyle: 'solid',
     borderBottomWidth: 1,
   },
-  kankoutext: {
+  kankouText: {
     fontSize: 16,
     lineHeight: 25,
   },
@@ -94,9 +94,9 @@ class DrawerCustom extends React.Component {
             data={kankouData}
             keyExtractor={this.keyExtractor}
             renderItem={({ item }) => (
-              <View style={styles.kankouview}>
+              <View style={styles.kankouView}>
                 <Text
-                  style={styles.kankoutext}
+                  style={styles.kankouText}
                   onPress={() => {
                     navigation.closeDrawer();
                     navigation.navigate('Dist', { dist: item });

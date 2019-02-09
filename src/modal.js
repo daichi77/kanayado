@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modalbox';
-import SearchIcon1 from 'react-native-vector-icons/AntDesign';
+import SearchIcon from 'react-native-vector-icons/AntDesign';
 
 const styles = StyleSheet.create({
   modal: {
@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 150,
   },
-
   horizontal: {
     flex: 1,
     flexDirection: 'row',
@@ -23,23 +22,21 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-
-  text1: {
+  blackText: {
     color: '#000000',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: '8%',
   },
-  text2: {
+  whiteText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: '15%',
   },
-
-  background1: {
+  priceBackground: {
     width: '80%',
     height: '80%',
     position: 'absolute',
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderRadius: 20,
   },
-  background2: {
+  detailBackground: {
     width: '80%',
     height: '80%',
     position: 'absolute',
@@ -76,30 +73,27 @@ const ModalScreen = ({
           style={{ width: '100%', height: '100%' }}
         />
       </View>
-
       <View style={{ width: '60%', height: '100%' }}>
         <View style={styles.vertical}>
           <View style={{
             width: '100%', height: '30%', borderColor: '#BDBDBD', borderStyle: 'solid', borderBottomWidth: 1, borderTopWidth: 5,
           }}
           >
-            <Text style={styles.text1}>{data.HotelName}</Text>
+            <Text style={styles.blackText}>{data.HotelName}</Text>
           </View>
-
           <View style={{ width: '100%', height: '40%' }}>
             <View style={styles.horizontal}>
               <View style={{ width: '50%', height: '100%' }}>
                 <View style={styles.vertical}>
-                  <View style={styles.background1}>
-                    <Text style={styles.text2}>{data.PlanSampleRateFrom}</Text>
+                  <View style={styles.priceBackground}>
+                    <Text style={styles.whiteText}>{data.PlanSampleRateFrom}</Text>
                   </View>
                 </View>
               </View>
-
               <View style={{ width: '50%', height: '100%', position: 'relative' }}>
                 <View style={styles.vertical}>
-                  <View style={styles.background2}>
-                    <SearchIcon1
+                  <View style={styles.detailBackground}>
+                    <SearchIcon
                       name="arrowright"
                       size={30}
                       onPress={detailScreen}
@@ -112,19 +106,16 @@ const ModalScreen = ({
               </View>
             </View>
           </View>
-
           <View style={{ width: '100%', height: '30%' }}>
             <View style={styles.horizontal}>
               <View style={{ width: '50%', height: '100%' }}>
-                <Text style={styles.text1}>価格</Text>
+                <Text style={styles.blackText}>価格</Text>
               </View>
-
               <View style={{ width: '50%', height: '100%' }}>
-                <Text style={styles.text1}>詳細</Text>
+                <Text style={styles.whiteText}>詳細</Text>
               </View>
             </View>
           </View>
-
         </View>
       </View>
     </View>
