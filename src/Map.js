@@ -3,8 +3,7 @@ import {
   StyleSheet, View, Text, Image, TouchableOpacity,
 } from 'react-native';
 import { Location, Permissions } from 'expo';
-import MapView from 'react-native-maps';
-import ClusteredMapView from 'react-native-maps-super-cluster';
+import MapView from 'react-native-maps-super-cluster';
 import { Marker } from 'react-native-maps';
 import { DOMParser } from 'xmldom';
 import { withNavigation } from 'react-navigation';
@@ -363,7 +362,7 @@ class Map extends React.Component {
           data={data}
           detailScreen={this.detailScreen}
         />
-
+        {/*
         <MapView
           ref={ ref => { this.mapView = ref }}
           style={styles.mapview}
@@ -384,15 +383,23 @@ class Map extends React.Component {
             longitudeDelta: 0.005,
           }}
         >
-          {/*<ClusteredMapView*/}
-            {/*data={data1}*/}
-            {/*animateClusters={false}*/}
-            {/*renderMarker={this.renderMarker}*/}
-            {/*renderCluster={this.renderCluster}*/}
-          {/*/>*/}
-
+        */}
+        <MapView
+          ref={ ref => { this.mapView = ref }}
+          style={styles.mapview}
+          data={data1}
+          animateClusters={false}
+          renderMarker={this.renderMarker}
+          renderCluster={this.renderCluster}
+          initialRegion={{
+            latitude: 36.5780818,
+            longitude: 136.6478206,
+            latitudeDelta: 0.00922,
+            longitudeDelta: 0.00521,
+          }}
+        >
           <TouchableOpacity
-            onPress={() => this.mapView.animateToRegion({
+            onPress={() => this.mapView.getMapRef().animateToRegion({
               latitude: this.state.lat,
               longitude: this.state.lon,
             }, 1000)}
@@ -402,8 +409,7 @@ class Map extends React.Component {
               source={placeRequire}
             />
           </TouchableOpacity>
-
-          <MapView.Marker
+          <Marker
           // 現在地にピンを配置
             coordinate={{
               latitude: this.state.lat,
