@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import MapView from 'react-native-maps';
+import PropTypes from 'prop-types';
+import { withNavigation } from 'react-navigation';
 import Modal from './modal';
 import global from './global';
 import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
 
 
 // 関数名や変数名の修正
-class Map extends React.Component {
+class MapDist extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,7 +59,6 @@ class Map extends React.Component {
     const { isOpen } = this.state;
     const { navigation } = this.props;
     const { coordinates } = navigation.getParam('dist');
-    console.log(coordinates);
     const region = {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude,
@@ -143,4 +144,10 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+MapDist.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+export default withNavigation(MapDist);

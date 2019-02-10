@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-navigation';
 import Icon from 'react-native-vector-icons/AntDesign';
 import PropTypes from 'prop-types';
 import SearchBar from './searchBar';
+import global from './global';
 
 const styles = StyleSheet.create({
   searchAndIcon: {
@@ -31,24 +32,11 @@ class DrawerCustom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      kankoudata: null,
       filterText: '',
     };
   }
 
-  componentWillMount() {
-    this.getSpot();
-  }
-
   keyExtractor = item => item.id;
-
-  getSpot = () => {
-    fetch('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1')
-      .then(response => response.json())
-      .then((responseJson) => {
-        this.setState({ kankoudata: responseJson.facilities });
-      });
-  };
 
   setFilter = (text) => {
     this.setState({
@@ -59,7 +47,7 @@ class DrawerCustom extends React.Component {
   render() {
     const { navigation } = this.props;
     const { filterText } = this.state;
-    let { kankoudata } = this.state;
+    let kankoudata = global.touristF;
     if (filterText !== '') {
       kankoudata = kankoudata.filter(t => t.name.includes(filterText));
     }

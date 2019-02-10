@@ -190,7 +190,6 @@ class Map extends React.Component {
           vacancysData = vacancysData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
           // 空室データと宿泊施設データを結合し、重複したIDを削除(空室データが優先して残る)
           lodgingSpotData = vacancysData.concat(hotelsData);
-          global.lodgingF = global.lodgingF.concat(hotelsData);
           lodgingSpotData = lodgingSpotData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
           this.setState({ lodgingFacilities: lodgingSpotData });
           global.lodgingF = lodgingSpotData;
