@@ -57,8 +57,9 @@ const styles = StyleSheet.create({
   },
 });
 
+const noPhotoImg = require('../assets/noPhoto.png');
+
 const ModalScreen = ({
-  // eslint-disable-next-line react/prop-types
   isOpen, toggleIsOpen, data, detailScreen,
 }) => (
   <Modal
@@ -71,7 +72,7 @@ const ModalScreen = ({
     <View style={styles.horizontal}>
       <View style={{ width: '40%', height: '100%' }}>
         <Image
-          source={{ uri: data.PictureURL }}
+          source={data.PictureURL === '' ? noPhotoImg : { uri: data.PictureURL }}
           style={{ width: '100%', height: '100%' }}
         />
       </View>
@@ -134,6 +135,9 @@ ModalScreen.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggleIsOpen: PropTypes.func.isRequired,
   detailScreen: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    data: PropTypes.object,
+  }).isRequired,
 };
 
 export default ModalScreen;
