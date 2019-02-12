@@ -42,7 +42,7 @@ class DrawerCustom extends React.Component {
     this.setState({
       filterText: text,
     });
-  }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -64,7 +64,9 @@ class DrawerCustom extends React.Component {
             style={styles.icon}
           />
           <SearchBar
-            includeFilter={(text) => { this.setFilter(text); }}
+            includeFilter={(text) => {
+              this.setFilter(text);
+            }}
           />
         </View>
         <ScrollView>
@@ -83,8 +85,7 @@ class DrawerCustom extends React.Component {
                   {item.name}
                 </Text>
               </View>
-            )
-            }
+            )}
           />
         </ScrollView>
       </SafeAreaView>

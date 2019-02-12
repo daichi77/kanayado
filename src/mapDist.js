@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import Modal from './modal';
 import global from './global';
-import touristSpotMarkerImg from '../assets/678111-map-marker-512.png';
-import 'date-utils';
+import touristSpotMarkerImg from '../assets/location.png';
 
 let data = [];
 
