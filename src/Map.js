@@ -231,6 +231,7 @@ class Map extends React.Component {
             latitudeDelta: 0.00922,
             longitudeDelta: 0.00521,
           }}
+          zoomEnabled
         >
           {
             // 宿泊施設にピンを配置
