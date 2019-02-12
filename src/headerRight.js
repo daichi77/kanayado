@@ -11,7 +11,7 @@ class TimePicker extends React.Component {
 
   showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
-  hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+  hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
   handleDatePicked = (date) => {
     console.log('A date has been picked: ', date);
