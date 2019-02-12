@@ -149,6 +149,14 @@ class Map extends React.Component {
 
   render() {
     const { isOpen } = this.state;
+    const { navigation } = this.props;
+    const { coordinates } = navigation.getParam('dist');
+    const region = {
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00521,
+    };
     const data1 = this.convertPoints(global.touristF);
     return (
       <View style={styles.container}>
@@ -164,12 +172,7 @@ class Map extends React.Component {
           animateClusters={false}
           renderMarker={this.renderMarker}
           renderCluster={this.renderCluster}
-          initialRegion={{
-            latitude: 36.5780818,
-            longitude: 136.6478206,
-            latitudeDelta: 0.00922,
-            longitudeDelta: 0.00521,
-          }}
+          initialRegion={region}
           zoomEnabled
         >
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
