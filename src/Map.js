@@ -86,6 +86,16 @@ const styles = StyleSheet.create({
     width: 86,
     height: 86,
   },
+  imageButton: {
+    flex: 0,
+    // flexDirection: 'row-reverse',
+    // justifyContent: 'flex-end',
+    // alignItems: 'flex-end',
+    right: '340%',
+    top: '583%',
+    width: 86,
+    height: 86,
+  },
   clusterContainer: {
     width: 24,
     height: 24,
@@ -392,6 +402,7 @@ class Map extends React.Component {
           renderMarker={this.renderMarker}
           renderCluster={this.renderCluster}
           initialRegion={{
+            // 金沢駅
             latitude: 36.5780818,
             longitude: 136.6478206,
             latitudeDelta: 0.00922,
@@ -399,13 +410,14 @@ class Map extends React.Component {
           }}
         >
           <TouchableOpacity
+            style={styles.image}
             onPress={() => this.mapView.getMapRef().animateToRegion({
               latitude: this.state.lat,
               longitude: this.state.lon,
             }, 1000)}
           >
             <Image
-              style={styles.image}
+              style={styles.imageButton}
               source={placeRequire}
             />
           </TouchableOpacity>
