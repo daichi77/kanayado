@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
 
-  mapview: {
+  mapView: {
     ...StyleSheet.absoluteFillObject,
   },
 
@@ -108,14 +108,15 @@ class Map extends React.Component {
       touristFacilities: [],
       lodgingFacilities: [],
       isOpen: false,
-      locationResult: null,
-      lat: 100,
-      lon: 0,
+      lat: 0,
+      long: 0,
+      errorMessage: null,
     };
   }
 
-  componentWillMount() {
-    this.getLocationAsync();
+  componentDidMount() {
+    this.getLocationAsync()
+      .catch(e => this.setState({ errorMessage: e }));
     this.nowTime();
     this.touristSpot('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1');
     this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
@@ -126,27 +127,31 @@ class Map extends React.Component {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
       this.setState({
-        locationResult: 'Permisstion to access location was Denied',
+        errorMessage: 'Permisstion to access location was Denied',
       });
     }
 
-    const location = await Location.getCurrentPositionAsync({});
-    this.setState({ locationResult: JSON.stringify(location) });
+    const location = await Location.getCurrentPositionAsync();
+    this.mapView.animateToRegion({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    }, 1000);
+    // this.setState({ errorMessage: JSON.stringify(location) });
+    console.log(JSON.stringify(location));
     this.setState({ lat: Number(location.coords.latitude.toFixed(7)) });
-    this.setState({ lon: Number(location.coords.longitude.toFixed(7)) });
-    console.log('getLocationAsync関数内：');
+    this.setState({ long: Number(location.coords.longitude.toFixed(7)) });
     console.log(location.coords.latitude.toFixed(7)); // 36.5288961
   };
 
-  toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }))
+  toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }));
 
   gotoElementScreen = (lodgingFacilitie) => {
     data = lodgingFacilitie;
     this.setState({ isOpen: true });
     const { navigation } = this.props;
-    const mapViewinf = this.mapView;
-    navigation.setParams({ inf: mapViewinf });
-  }
+    const mapViewInf = this.mapView;
+    navigation.setParams({ inf: mapViewInf });
+  };
 
   detailScreen = () => {
     const { navigation } = this.props;
@@ -157,7 +162,7 @@ class Map extends React.Component {
       planSampleRateFrom: data.PlanSampleRateFrom,
       hotelUrl: data.HotelUrl,
     });
-  }
+  };
 
   // 観光地取得
   touristSpot = async (url) => {
@@ -173,7 +178,14 @@ class Map extends React.Component {
     } catch (error) {
       console.error('error');
     }
-  }
+  };
+
+  // 現在の時刻を取得
+  // eslint-disable-next-line class-methods-use-this
+  nowTime = () => {
+    const now = new Date();
+    timeData = now.toFormat('YYYYMMDD');
+  };
 
   lodgingSpot(url) {
     const hotelData = [];
@@ -294,13 +306,6 @@ class Map extends React.Component {
     xmlhttp.send();
   }
 
-  // 現在の時刻を取得
-  // eslint-disable-next-line class-methods-use-this
-  nowTime() {
-    const now = new Date();
-    timeData = now.toFormat('YYYYMMDD');
-  }
-
   // eslint-disable-next-line class-methods-use-this
   convertPoints(data1) {
     const results = {
@@ -330,31 +335,28 @@ class Map extends React.Component {
       image={touristSpotMarkerImg}
       title={pin.value.name}
     />
-  )
+  );
 
   renderCluster = (cluster, onPress) => (
-    <Marker coordinate={cluster.coordinate} onPress={onPress}>
+    <Marker
+      coordinate={cluster.coordinate}
+      onPress={onPress}
+    >
       <View style={styles.clusterContainer}>
         <Text style={styles.counterText}>
           {cluster.pointCount}
         </Text>
       </View>
     </Marker>
-  )
+  );
 
   render() {
-    console.log('render関数内：');
-    console.log(Number(this.state.lat));
-    console.log('render関数内 Number変換なし：');
-    console.log(this.state.lon);
-    console.log('render内型判定');
-    console.log(typeof this.state.lat);
-    console.log(typeof this.state.lon);
-    const { lodgingFacilities, touristFacilities, isOpen } = this.state;
+    const {
+      lodgingFacilities, touristFacilities, isOpen, lat, long,
+    } = this.state;
     const data1 = this.convertPoints(touristFacilities);
 
     return (
-
       <View style={styles.container}>
         <Modal
           isOpen={isOpen}
@@ -362,31 +364,11 @@ class Map extends React.Component {
           data={data}
           detailScreen={this.detailScreen}
         />
-        {/*
         <MapView
-          ref={ ref => { this.mapView = ref }}
-          style={styles.mapview}
-
-          // regionで管理する。
-          // onRegionChange={region}
-          // onRegionChange={this.onRegionChange}
-
-          // 初回読み込み時に描画
-          region={{
-          // 現在住所(少数第７位まで)
-          // 36.5289133 15
-          // 136.6285175  120
-            latitude: this.state.lat, // 緯度
-            longitude: this.state.lon, // 経度
-            // ズーム
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
+          ref={(ref) => {
+            this.mapView = ref;
           }}
-        >
-        */}
-        <MapView
-          ref={ ref => { this.mapView = ref }}
-          style={styles.mapview}
+          style={styles.mapView}
           data={data1}
           animateClusters={false}
           renderMarker={this.renderMarker}
@@ -399,10 +381,11 @@ class Map extends React.Component {
           }}
         >
           <TouchableOpacity
-            onPress={() => this.mapView.getMapRef().animateToRegion({
-              latitude: this.state.lat,
-              longitude: this.state.lon,
-            }, 1000)}
+            onPress={() => this.mapView.getMapRef()
+              .animateToRegion({
+                latitude: lat,
+                longitude: long,
+              }, 1000)}
           >
             <Image
               style={styles.image}
@@ -410,16 +393,20 @@ class Map extends React.Component {
             />
           </TouchableOpacity>
           <Marker
-          // 現在地にピンを配置
+            // 現在地にピンを配置
             coordinate={{
-              latitude: this.state.lat,
-              longitude: this.state.lon,
+              latitude: lat,
+              longitude: long,
             }}
             title="現在地"
-          // description={"現在地はここです"}
+            // description={"現在地はここです"}
             image={currentPlaceImg}
           />
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+          }}
+          >
             <View style={styles.mark_blue} />
             <Text style={styles.text1}>空室</Text>
             <View style={styles.mark_red} />
@@ -441,7 +428,9 @@ class Map extends React.Component {
                   onPress={() => this.gotoElementScreen(lodgingFacilitie)}
                   key={lodgingFacilitie.HotelID}
                 >
-                  <View style={lodgingFacilitie.State === 'vacancy' ? styles.marker_blue : styles.marker_red}>
+                  <View
+                    style={lodgingFacilitie.State === 'vacancy' ? styles.marker_blue : styles.marker_red}
+                  >
                     <Text style={styles.text}>
                       {title}
                     </Text>
