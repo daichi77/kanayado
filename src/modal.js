@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   detialbutton: {
-    borderWidth: 3.0,
-    borderColor: '#1EE514',
+    borderWidth: 2.0,
+    borderColor: '#DEEDCB',
     borderRadius: 10,
     padding: 5,
     marginRight: 18,
@@ -106,7 +106,7 @@ const ModalScreen = ({
                 <View style={{ width: '50%', height: '100%', position: 'relative' }}>
                   <View style={styles.vertical}>
                     <View style={styles.background2}>
-                      <Button iconRight primary onPress={detailScreen} style={styles.detialbutton}>
+                      <Button iconRight info onPress={detailScreen} style={styles.detialbutton}>
                         <Text>Next</Text>
                         <Icon name='arrow-forward' />
                       </Button>
