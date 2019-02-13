@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 import HeaderLeft from './headerLeft';
+import HeaderLeftBack from './headerLeftBack';
 import HeaderRight from './headerRight';
 import HeaderLeftBack from './headerLeftBack';
 import Map from './Map';
@@ -16,7 +17,7 @@ const Stack = createStackNavigator({
       headerLeft: <HeaderLeft />,
       headerRight: <HeaderRight />,
     }),
-  }, 
+  },
   Dist: {
     screen: MapDist,
     navigationOptions: () => ({
