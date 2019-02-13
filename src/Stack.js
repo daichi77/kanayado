@@ -3,7 +3,6 @@ import { createStackNavigator } from 'react-navigation';
 import HeaderLeft from './headerLeft';
 import HeaderLeftBack from './headerLeftBack';
 import HeaderRight from './headerRight';
-import HeaderLeftBack from './headerLeftBack';
 import Map from './Map';
 import MapDist from './mapDist';
 import Detail from './detailScreen';
