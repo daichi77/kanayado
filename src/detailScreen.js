@@ -93,7 +93,7 @@ class secondDetial extends React.Component {
     console.log(params.hotelName);
 
     for (s in params.hotelName) {
-      if (hotelArray1.length < 14) {
+      if (hotelArray1.length < 13) {
         hotelArray1[s] = params.hotelName[s]
       }
       else {
@@ -101,7 +101,7 @@ class secondDetial extends React.Component {
       }
     }
 
-    const hotel1 = hotelArray1.join(''); 
+    const hotel1 = hotelArray1.join('');
     const hotel2 = hotelArray2.join('');
 
     return (
