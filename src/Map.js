@@ -110,11 +110,16 @@ const styles = StyleSheet.create({
 
 const placeRequire = require('../assets/place.png');
 
-// 関数名や変数名の修正
 class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      current: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
+      },
       touristFacilities: [],
       lodgingFacilities: [],
       isOpen: false,
@@ -140,12 +145,6 @@ class Map extends React.Component {
     }
 
     const location = await Location.getCurrentPositionAsync({});
-    // this.mapView.animateToRegion({
-    //   latitude: location.coords.latitude,
-    //   longitude: location.coords.longitude,
-    //   latitudeDelta: 0,
-    //   longitudeDelta: 0,
-    // }, 1000);
     this.setState({
       current: {
         latitude: location.coords.latitude,
@@ -153,7 +152,22 @@ class Map extends React.Component {
         latitudeDelta: 0,
         longitudeDelta: 0,
       },
+    }, () => {
+      this.animateToCurrent();
     });
+  };
+
+  setMapRef = (clusteredMap) => {
+    this.mapView = clusteredMap.getMapRef();
+  };
+
+  setCurrentMarker = (marker) => {
+    this.currentMarker = marker;
+  };
+
+  animateToCurrent = () => {
+    const { current } = this.state;
+    this.mapView.animateToRegion(current, 1000);
   };
 
   toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }));
@@ -187,8 +201,8 @@ class Map extends React.Component {
       } else {
         this.setState({ touristFacilities: touristSpotData });
       }
-    } catch (error) {
-      console.error('error');
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -361,18 +375,9 @@ class Map extends React.Component {
     </Marker>
   );
 
-  setMapRef = (map) => {
-    this.mapView = map.getMapRef();
-  };
-
-  animateToCurrent = () => {
-    const { current } = this.state;
-    this.mapView.animateToRegion(current, 1000);
-  };
-
   render() {
     const {
-      lodgingFacilities, touristFacilities, isOpen, current,
+      lodgingFacilities, touristFacilities, isOpen, current, errorMessage,
     } = this.state;
     const KanazawaStation = {
       latitude: 36.5780818,
@@ -382,6 +387,9 @@ class Map extends React.Component {
     };
     const data1 = this.convertPoints(touristFacilities);
 
+    if (errorMessage) {
+      console.error(errorMessage);
+    }
     return (
       <View style={styles.container}>
         <Modal
@@ -409,8 +417,11 @@ class Map extends React.Component {
             />
           </TouchableOpacity>
           <Marker
-            // 現在地にピンを配置
-            coordinate={current}
+            ref={this.setCurrentMarker}
+            coordinate={{
+              latitude: current.latitude,
+              longitude: current.longitude,
+            }}
             title="現在地"
             // description={"現在地はここです"}
             image={currentPlaceImg}
