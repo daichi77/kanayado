@@ -4,13 +4,13 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modalbox';
-// import SearchIcon1 from 'react-native-vector-icons/AntDesign';
 import {
   Container,
   Button,
   Text,
   Icon,
 } from 'native-base';
+import Reviewpng from '../assets/review.png';
 
 const styles = StyleSheet.create({
   modal: {
@@ -29,22 +29,26 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-
+  review: {
+    flexDirection: 'row',
+  },
+  text: {
+    fontSize: 18,
+    color: 'black',
+  },
   text1: {
     color: '#000000',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: '8%',
   },
   text2: {
     color: '#0B0719',
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: '15%',
+    marginTop: 10,
   },
-
   background1: {
     width: '80%',
     height: '80%',
@@ -98,6 +102,14 @@ const ModalScreen = ({
               <Text style={styles.text1}>{data.HotelName}</Text>
             </View>
 
+            <View style={styles.review}>
+              <Image
+                source={Reviewpng}
+                style={styles.review}
+              />
+              <Text style={styles.text}>{ data.HotelReview}/5.0</Text>
+            </View>
+
             <View style={{ width: '100%', height: '40%' }}>
               <View style={styles.horizontal}>
                 <View style={{ width: '50%', height: '100%' }}>
@@ -120,18 +132,6 @@ const ModalScreen = ({
                       </Button>
                     </View>
                   </View>
-                </View>
-              </View>
-            </View>
-
-            <View style={{ width: '100%', height: '30%' }}>
-              <View style={styles.horizontal}>
-                <View style={{ width: '50%', height: '100%' }}>
-                  <Text style={styles.text1}>価格</Text>
-                </View>
-
-                <View style={{ width: '50%', height: '100%' }}>
-                  <Text style={styles.text1}>詳細</Text>
                 </View>
               </View>
             </View>
