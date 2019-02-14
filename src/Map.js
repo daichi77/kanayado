@@ -9,6 +9,7 @@ import { DOMParser } from 'xmldom';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import Modal from './modal';
+import global from './global';
 import touristSpotMarkerImg from '../assets/location.png';
 import currentPlaceImg from '../assets/currentPlace.png';
 import 'date-utils';
@@ -196,8 +197,9 @@ class Map extends React.Component {
       const response = await fetch(url);
       const json = await response.json();
       touristSpotData = touristSpotData.concat(json.facilities);
-      if (json.nextPage !== undefined) {
-        this.touristSpot(json.nextPage);
+      global.touristF = global.touristF.concat(json.facilities);
+      if (json.next_page !== undefined) {
+        this.touristSpot(json.next_page);
       } else {
         this.setState({ touristFacilities: touristSpotData });
       }
@@ -324,6 +326,7 @@ class Map extends React.Component {
           lodgingSpotData = vacancysData.concat(hotelsData);
           lodgingSpotData = lodgingSpotData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
           this.setState({ lodgingFacilities: lodgingSpotData });
+          global.lodgingF = lodgingSpotData;
         }
       }
     };

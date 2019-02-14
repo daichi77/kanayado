@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-navigation';
 import Icon from 'react-native-vector-icons/AntDesign';
 import PropTypes from 'prop-types';
 import SearchBar from './searchBar';
+import global from './global';
 
 const styles = StyleSheet.create({
   searchAndIcon: {
@@ -27,36 +28,15 @@ const styles = StyleSheet.create({
   },
 });
 
-// 金沢の観光データのAPI
-const kanazawaUrl = 'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1';
-
 class DrawerCustom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      kankouData: [],
       filterText: '',
     };
   }
 
-  componentWillMount() {
-    this.getSpot(kanazawaUrl);
-  }
-
   keyExtractor = item => item.id;
-
-  // 観光データ取得メソッド
-  getSpot = (url) => {
-    fetch(url)
-      .then(response => response.json())
-      .then((responseJson) => {
-        const getKankouData = responseJson.facilities;
-        this.setState(prevState => ({ kankouData: prevState.kankouData.concat(getKankouData) }));
-        if (responseJson.nextPage !== undefined) {
-          this.getSpot(responseJson.nextPage);
-        }
-      });
-  };
 
   setFilter = (text) => {
     this.setState({
@@ -67,9 +47,9 @@ class DrawerCustom extends React.Component {
   render() {
     const { navigation } = this.props;
     const { filterText } = this.state;
-    let { kankouData } = this.state;
+    let kankoudata = global.touristF;
     if (filterText !== '') {
-      kankouData = kankouData.filter(t => t.name.includes(filterText));
+      kankoudata = kankoudata.filter(t => t.name.includes(filterText));
     }
     return (
       <SafeAreaView>
@@ -79,7 +59,7 @@ class DrawerCustom extends React.Component {
             size={35}
             onPress={() => {
               navigation.closeDrawer();
-              navigation.navigate('MainScreen');
+              // navigation.navigate('MainScreen');
             }}
             style={styles.icon}
           />
@@ -91,7 +71,7 @@ class DrawerCustom extends React.Component {
         </View>
         <ScrollView>
           <FlatList
-            data={kankouData}
+            data={kankoudata}
             keyExtractor={this.keyExtractor}
             renderItem={({ item }) => (
               <View style={styles.kankouview}>
@@ -100,6 +80,7 @@ class DrawerCustom extends React.Component {
                   onPress={() => {
                     navigation.closeDrawer();
                     navigation.navigate('Dist', { dist: item });
+                    console.log(item);
                   }}
                 >
                   {item.name}
