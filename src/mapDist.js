@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 // 関数名や変数名の修正
 class MapDist extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -189,7 +188,7 @@ class MapDist extends React.Component {
           initialRegion={region}
           zoomEnabled
         >
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <View style={{ flexDirection: 'row' }}>
             <View style={styles.mark_blue} />
             <Text style={styles.text1}>空室</Text>
             <View style={styles.mark_red} />

@@ -334,7 +334,7 @@ class Map extends React.Component {
           }}
           zoomEnabled
         >
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <View style={{ flexDirection: 'row' }}>
             <View style={styles.mark_blue} />
             <Text style={styles.text1}>空室</Text>
             <View style={styles.mark_red} />
