@@ -1,14 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import MapView from 'react-native-maps-super-cluster';
-import { Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import { DOMParser } from 'xmldom';
-import { withNavigation } from 'react-navigation';
-import PropTypes from 'prop-types';
 import Modal from './modal';
 import touristSpotMarkerImg from '../assets/location.png';
 import 'date-utils';
-
 
 let hotelsData = [];
 let vacancysData = [];
@@ -18,7 +14,6 @@ let data = [];
 let start1 = 1;
 let start2 = 1;
 const jalanKey = 'and16735d417c1';
-let timeData = 0;
 
 const styles = StyleSheet.create({
   container: {
@@ -32,57 +27,19 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 
-  mark_red: {
-    width: 15,
-    height: 15,
-    marginTop: 5,
-    marginRight: 2,
-    backgroundColor: 'red',
-    borderRadius: 10,
-  },
-  mark_blue: {
-    width: 15,
-    height: 15,
-    marginTop: 5,
-    marginRight: 2,
-    backgroundColor: 'blue',
-    borderRadius: 10,
-  },
-  marker_red: {
+  marker: {
     backgroundColor: 'red',
     padding: 5,
     borderRadius: 10,
   },
-  marker_blue: {
+  marker1: {
     backgroundColor: 'blue',
     padding: 5,
     borderRadius: 10,
   },
   text: {
     color: '#FFF',
-    fontSize: 12,
     fontWeight: 'bold',
-  },
-  text1: {
-    fontSize: 20,
-    marginTop: 2,
-    marginRight: 5,
-    fontWeight: 'bold',
-  },
-  counterText: {
-    fontSize: 12,
-    color: '#04B431',
-    fontWeight: 'bold',
-  },
-  clusterContainer: {
-    width: 24,
-    height: 24,
-    borderWidth: 2,
-    borderRadius: 12,
-    alignItems: 'center',
-    borderColor: '#04B431',
-    justifyContent: 'center',
-    backgroundColor: '#FFF',
   },
 });
 
@@ -95,11 +52,11 @@ class Map extends React.Component {
       touristFacilities: [],
       lodgingFacilities: [],
       isOpen: false,
+      date: new Date(),
     };
   }
 
   componentWillMount() {
-    this.nowTime();
     this.touristSpot('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1');
     this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
   }
@@ -109,17 +66,6 @@ class Map extends React.Component {
   gotoElementScreen = (lodgingFacilitie) => {
     data = lodgingFacilitie;
     this.setState({ isOpen: true });
-  }
-
-  detailScreen = () => {
-    const { navigation } = this.props;
-    navigation.navigate('DetailScreen', {
-      hotelName: data.HotelName,
-      hotelAddress: data.HotelAddress,
-      pictureURL: data.PictureURL,
-      planSampleRateFrom: data.PlanSampleRateFrom,
-      hotelUrl: data.HotelUrl,
-    });
   }
 
   // 観光地取得
@@ -140,6 +86,9 @@ class Map extends React.Component {
 
   lodgingSpot(url) {
     const hotelData = [];
+    // eslint-disable-next-line react/destructuring-assignment
+    const time = prevState => prevState.date;
+    const now = time.toFormat('YYYYMMDD');
     const parser = new DOMParser();
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = () => {
@@ -157,8 +106,6 @@ class Map extends React.Component {
             let pictureURL = '';
             const hotelId = hotels[i].getElementsByTagName('HotelID')[0].textContent;
             const hotelName = hotels[i].getElementsByTagName('HotelName')[0].textContent;
-            const hotelAddress = hotels[i].getElementsByTagName('HotelAddress')[0].textContent;
-            const hotelURL = hotels[i].getElementsByTagName('HotelDetailURL')[0].textContent;
             const planSampleRateFrom = hotels[i].getElementsByTagName('SampleRateFrom')[0].textContent;
             if (hotels[i].getElementsByTagName('PictureURL')[0] !== undefined) {
               pictureURL = hotels[i].getElementsByTagName('PictureURL')[0].textContent;
@@ -171,10 +118,8 @@ class Map extends React.Component {
             hotelData[i] = {
               HotelID: hotelId,
               HotelName: hotelName,
-              HotelAddress: hotelAddress,
               PlanSampleRateFrom: planSampleRateFrom,
               PictureURL: pictureURL,
-              HotelUrl: hotelURL,
               X: wx,
               Y: wy,
               State: 'noVacancy',
@@ -185,7 +130,7 @@ class Map extends React.Component {
           hotelsData = hotelsData.concat(hotelData);
           this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
         } else if (xmlhttp.status === 400) {
-          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${timeData}&start=${start2}&count=100&order=2`);
+          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${now}&start=${start2}&count=100&order=2`);
         }
       }
     };
@@ -197,6 +142,9 @@ class Map extends React.Component {
   // 宿泊地取得
   lodgingVacancySpot(url) {
     let hotelData = [];
+    // eslint-disable-next-line react/destructuring-assignment
+    const time = this.state.date;
+    const now = time.toFormat('YYYYMMDD');
     const parser = new DOMParser();
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = () => {
@@ -215,8 +163,6 @@ class Map extends React.Component {
             const hotelId = hotels[i].getElementsByTagName('HotelID')[0].textContent;
             const hotelName = hotels[i].getElementsByTagName('HotelName')[0].textContent;
             const sampleRate = hotels[i].getElementsByTagName('SampleRate')[0].textContent;
-            const hotelAddress = hotels[i].getElementsByTagName('HotelAddress')[0].textContent;
-            const hotelURL = hotels[i].getElementsByTagName('HotelDetailURL')[0].textContent;
             if (hotels[i].getElementsByTagName('PictureURL')[0] !== undefined) {
               pictureURL = hotels[i].getElementsByTagName('PictureURL')[0].textContent;
             }
@@ -229,8 +175,6 @@ class Map extends React.Component {
               HotelID: hotelId,
               HotelName: hotelName,
               PlanSampleRateFrom: sampleRate,
-              HotelAddress: hotelAddress,
-              HotelUrl: hotelURL,
               PictureURL: pictureURL,
               X: wx,
               Y: wy,
@@ -242,7 +186,7 @@ class Map extends React.Component {
           // 100件の空室データから重複したIDを削除(値段が安いのが残る)
           vacancysData = vacancysData.concat(hotelData);
           start2 += 100;
-          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${timeData}&start=${start2}&count=100&order=2`);
+          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${now}&start=${start2}&count=100&order=2`);
         } else if (xmlhttp.status === 400) {
           // 全ての空室データから重複したIDを削除(値段が安いのが残る)
           vacancysData = vacancysData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
@@ -257,57 +201,14 @@ class Map extends React.Component {
     xmlhttp.send();
   }
 
-  // 現在の時刻を取得
+  // 次の画面へ遷移します
   // eslint-disable-next-line class-methods-use-this
-  nowTime() {
-    const now = new Date();
-    timeData = now.toFormat('YYYYMMDD');
+  detailScreen() {
+    console.log(data);
   }
-
-  // eslint-disable-next-line class-methods-use-this
-  convertPoints(data1) {
-    const results = {
-      type: 'MapCollection',
-      features: [],
-    };
-    // eslint-disable-next-line array-callback-return
-    data1.map((value) => {
-      // eslint-disable-next-line no-undef
-      array = {
-        value,
-        location: {
-          latitude: value.coordinates.latitude,
-          longitude: value.coordinates.longitude,
-        },
-      };
-      // eslint-disable-next-line no-undef
-      results.features.push(array);
-    });
-    return results.features;
-  }
-
-  renderMarker = pin => (
-    <Marker
-      key={pin.value.id}
-      coordinate={pin.location}
-      image={touristSpotMarkerImg}
-      title={pin.value.name}
-    />
-  )
-
-  renderCluster = (cluster, onPress) => (
-    <Marker coordinate={cluster.coordinate} onPress={onPress}>
-      <View style={styles.clusterContainer}>
-        <Text style={styles.counterText}>
-          {cluster.pointCount}
-        </Text>
-      </View>
-    </Marker>
-  )
 
   render() {
     const { lodgingFacilities, touristFacilities, isOpen } = this.state;
-    const data1 = this.convertPoints(touristFacilities);
     return (
       <View style={styles.container}>
         <Modal
@@ -318,10 +219,6 @@ class Map extends React.Component {
         />
         <MapView
           style={styles.mapview}
-          data={data1}
-          animateClusters={false}
-          renderMarker={this.renderMarker}
-          renderCluster={this.renderCluster}
           initialRegion={{
             latitude: 36.5780818,
             longitude: 136.6478206,
@@ -329,12 +226,6 @@ class Map extends React.Component {
             longitudeDelta: 0.00521,
           }}
         >
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-            <View style={styles.mark_blue} />
-            <Text style={styles.text1}>空室</Text>
-            <View style={styles.mark_red} />
-            <Text style={styles.text1}>満室</Text>
-          </View>
           {
             // 宿泊施設にピンを配置
             lodgingFacilities.map((lodgingFacilitie) => {
@@ -342,8 +233,25 @@ class Map extends React.Component {
               if (lodgingFacilitie.HotelID !== undefined) {
                 title = lodgingFacilitie.PlanSampleRateFrom;
               }
+              if (lodgingFacilitie.State === 'noVacancy') {
+                return (
+                  <MapView.Marker
+                    coordinate={{
+                      latitude: lodgingFacilitie.Y,
+                      longitude: lodgingFacilitie.X,
+                    }}
+                    onPress={() => this.gotoElementScreen(lodgingFacilitie)}
+                    key={lodgingFacilitie.HotelID}
+                  >
+                    <View style={styles.marker}>
+                      <Text style={styles.text}>
+                        {title}
+                      </Text>
+                    </View>
+                  </MapView.Marker>);
+              }
               return (
-                <Marker
+                <MapView.Marker
                   coordinate={{
                     latitude: lodgingFacilitie.Y,
                     longitude: lodgingFacilitie.X,
@@ -351,24 +259,38 @@ class Map extends React.Component {
                   onPress={() => this.gotoElementScreen(lodgingFacilitie)}
                   key={lodgingFacilitie.HotelID}
                 >
-                  <View style={lodgingFacilitie.State === 'vacancy' ? styles.marker_blue : styles.marker_red}>
-                    <Text style={styles.text}>
-                      {title}
-                    </Text>
+                  <View style={styles.marker1}>
+                    <Text style={styles.text}>{title}</Text>
                   </View>
-                </Marker>);
+                </MapView.Marker>
+              );
             })
           }
+          {
+            // 観光施設にピンを配置
+            touristFacilities.map((touristFacilitie) => {
+              let title = '観光地名';
+              if (touristFacilitie.id !== undefined) {
+                title = touristFacilitie.name;
+              }
+              return (
+                <MapView.Marker
+                  coordinate={{
+                    latitude: touristFacilitie.coordinates.latitude,
+                    longitude: touristFacilitie.coordinates.longitude,
+                  }}
+                  title={title}
+                  key={touristFacilitie.id}
+                  image={touristSpotMarkerImg}
+                />
+              );
+            })
+          }
+
         </MapView>
       </View>
     );
   }
 }
 
-Map.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-};
-
-export default withNavigation(Map);
+export default Map;
