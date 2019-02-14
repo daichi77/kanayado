@@ -426,11 +426,7 @@ class Map extends React.Component {
             // description={"現在地はここです"}
             image={currentPlaceImg}
           />
-          <View style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-          }}
-          >
+          <View style={{ flexDirection: 'row' }}>
             <View style={styles.markBlue} />
             <Text style={styles.text1}>空室</Text>
             <View style={styles.markRed} />
