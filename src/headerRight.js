@@ -15,10 +15,11 @@ class TimePicker extends React.Component {
   hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
   handleDatePicked = (date) => {
-    this.setState({ date });
-
     console.log('A date has been picked: ', date);
+    
+
     this.hideDateTimePicker();
+    this.setState({ date });
   };
 
   render() {
@@ -45,11 +46,5 @@ class TimePicker extends React.Component {
     );
   }
 }
-
-// const setParamsAction = NavigationAction.setParams({
-//   params: { title: 'date' },
-//   key: 'time',
-// });
-// this.props.navigation.dispatch(setParamsAction);
 
 export default withNavigation(TimePicker);
