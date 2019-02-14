@@ -19,6 +19,7 @@ let start1 = 1;
 let start2 = 1;
 const jalanKey = 'and16735d417c1';
 let timeData = 0;
+let array = [];
 
 const styles = StyleSheet.create({
   container: {
@@ -95,6 +96,7 @@ class Map extends React.Component {
       touristFacilities: [],
       lodgingFacilities: [],
       isOpen: false,
+      error: '',
     };
   }
 
@@ -134,7 +136,7 @@ class Map extends React.Component {
         this.setState({ touristFacilities: touristSpotData });
       }
     } catch (error) {
-      console.error('error');
+      this.setState({ error });
     }
   }
 
@@ -238,17 +240,23 @@ class Map extends React.Component {
             };
           }
 
-          hotelData = hotelData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
+          hotelData = hotelData.filter(
+            (v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1),
+          );
           // 100件の空室データから重複したIDを削除(値段が安いのが残る)
           vacancysData = vacancysData.concat(hotelData);
           start2 += 100;
           this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${timeData}&start=${start2}&count=100&order=2`);
         } else if (xmlhttp.status === 400) {
           // 全ての空室データから重複したIDを削除(値段が安いのが残る)
-          vacancysData = vacancysData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
+          vacancysData = vacancysData.filter(
+            (v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1),
+          );
           // 空室データと宿泊施設データを結合し、重複したIDを削除(空室データが優先して残る)
           lodgingSpotData = vacancysData.concat(hotelsData);
-          lodgingSpotData = lodgingSpotData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
+          lodgingSpotData = lodgingSpotData.filter(
+            (v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1),
+          );
           this.setState({ lodgingFacilities: lodgingSpotData });
         }
       }
@@ -270,9 +278,7 @@ class Map extends React.Component {
       type: 'MapCollection',
       features: [],
     };
-    // eslint-disable-next-line array-callback-return
     data1.map((value) => {
-      // eslint-disable-next-line no-undef
       array = {
         value,
         location: {
@@ -280,8 +286,8 @@ class Map extends React.Component {
           longitude: value.coordinates.longitude,
         },
       };
-      // eslint-disable-next-line no-undef
-      results.features.push(array);
+      const featuresArray = results.features.push(array);
+      return featuresArray;
     });
     return results.features;
   }
@@ -306,7 +312,12 @@ class Map extends React.Component {
   )
 
   render() {
-    const { lodgingFacilities, touristFacilities, isOpen } = this.state;
+    const {
+      lodgingFacilities, touristFacilities, isOpen, error,
+    } = this.state;
+    if (error.state) {
+      return <Text>Caught an error</Text>;
+    }
     const data1 = this.convertPoints(touristFacilities);
     return (
       <View style={styles.container}>
