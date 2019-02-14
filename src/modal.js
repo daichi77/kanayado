@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
 const noPhotoImg = require('../assets/noPhoto.png');
 
 const ModalScreen = ({
-                       isOpen, toggleIsOpen, data, detailScreen,
-                     }) => (
+  isOpen, toggleIsOpen, data, detailScreen,
+}) => (
   <Modal
     isOpen={isOpen}
     onClosed={toggleIsOpen}
@@ -72,21 +72,23 @@ const ModalScreen = ({
     <View style={styles.horizontal}>
       <View style={{
         width: '40%',
-        height: '100%'
-      }}>
+        height: '100%',
+      }}
+      >
         <Image
           source={data.PictureURL === '' ? noPhotoImg : { uri: data.PictureURL }}
           style={{
             width: '100%',
-            height: '100%'
+            height: '100%',
           }}
         />
       </View>
 
       <View style={{
         width: '60%',
-        height: '100%'
-      }}>
+        height: '100%',
+      }}
+      >
         <View style={styles.vertical}>
           <View style={{
             width: '100%',
@@ -102,13 +104,15 @@ const ModalScreen = ({
 
           <View style={{
             width: '100%',
-            height: '40%'
-          }}>
+            height: '40%',
+          }}
+          >
             <View style={styles.horizontal}>
               <View style={{
                 width: '50%',
-                height: '100%'
-              }}>
+                height: '100%',
+              }}
+              >
                 <View style={styles.vertical}>
                   <View style={styles.background1}>
                     <Text style={styles.text2}>{data.PlanSampleRateFrom}</Text>
@@ -119,8 +123,9 @@ const ModalScreen = ({
               <View style={{
                 width: '50%',
                 height: '100%',
-                position: 'relative'
-              }}>
+                position: 'relative',
+              }}
+              >
                 <View style={styles.vertical}>
                   <View style={styles.background2}>
                     <SearchIcon1
@@ -143,20 +148,23 @@ const ModalScreen = ({
 
           <View style={{
             width: '100%',
-            height: '30%'
-          }}>
+            height: '30%',
+          }}
+          >
             <View style={styles.horizontal}>
               <View style={{
                 width: '50%',
-                height: '100%'
-              }}>
+                height: '100%',
+              }}
+              >
                 <Text style={styles.text1}>価格</Text>
               </View>
 
               <View style={{
                 width: '50%',
-                height: '100%'
-              }}>
+                height: '100%',
+              }}
+              >
                 <Text style={styles.text1}>詳細</Text>
               </View>
             </View>
