@@ -59,7 +59,7 @@ class DrawerCustom extends React.Component {
             size={35}
             onPress={() => {
               navigation.closeDrawer();
-              navigation.navigate('MainScreen');
+              // navigation.navigate('MainScreen');
             }}
             style={styles.icon}
           />
@@ -80,6 +80,7 @@ class DrawerCustom extends React.Component {
                   onPress={() => {
                     navigation.closeDrawer();
                     navigation.navigate('Dist', { dist: item });
+                    console.log(item);
                   }}
                 >
                   {item.name}

@@ -19,11 +19,6 @@ const Stack = createStackNavigator({
   },
   Dist: {
     screen: MapDist,
-    navigationOptions: () => ({
-      title: 'マップ',
-      headerLeft: <HeaderLeft />,
-      headerRight: <HeaderRight />,
-    }),
   },
   DetailScreen: {
     screen: Detail,

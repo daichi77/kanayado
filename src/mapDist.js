@@ -80,12 +80,32 @@ const styles = StyleSheet.create({
 
 
 // 関数名や変数名の修正
-class Map extends React.Component {
+class MapDist extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    const { name } = navigation.getParam('dist', '観光地');
+    return {
+      title: name,
+    };
+  };
+
   constructor(props) {
     super(props);
     this.state = {
+      region: '',
       isOpen: false,
     };
+  }
+
+  componentWillMount() {
+    const { navigation } = this.props;
+    const { coordinates } = navigation.getParam('dist');
+    const getregion = {
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00521,
+    };
+    this.setState({ region: getregion });
   }
 
   toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }))
@@ -148,15 +168,7 @@ class Map extends React.Component {
   )
 
   render() {
-    const { isOpen } = this.state;
-    const { navigation } = this.props;
-    const { coordinates } = navigation.getParam('dist');
-    const region = {
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-      latitudeDelta: 0.00922,
-      longitudeDelta: 0.00521,
-    };
+    const { isOpen, region } = this.state;
     const data1 = this.convertPoints(global.touristF);
     return (
       <View style={styles.container}>
@@ -217,4 +229,4 @@ Map.propTypes = {
   }).isRequired,
 };
 
-export default withNavigation(Map);
+export default withNavigation(MapDist);
