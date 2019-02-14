@@ -61,8 +61,8 @@ class Map extends React.Component {
       const response = await fetch(url);
       const json = await response.json();
       touristSpotData = touristSpotData.concat(json.facilities);
-      if (json.next_page !== undefined) {
-        this.touristSpot(json.next_page);
+      if (json.nextPage !== undefined) {
+        this.touristSpot(json.nextPage);
       } else {
         this.setState({ touristFacilities: touristSpotData });
       }

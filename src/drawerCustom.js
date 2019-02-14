@@ -52,8 +52,8 @@ class DrawerCustom extends React.Component {
       .then((responseJson) => {
         const getKankouData = responseJson.facilities;
         this.setState(prevState => ({ kankouData: prevState.kankouData.concat(getKankouData) }));
-        if (responseJson.next_page !== undefined) {
-          this.getSpot(responseJson.next_page);
+        if (responseJson.nextPage !== undefined) {
+          this.getSpot(responseJson.nextPage);
         }
       });
   };
