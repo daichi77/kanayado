@@ -186,7 +186,7 @@ class MapDist extends React.Component {
           animateClusters={false}
           renderMarker={this.renderMarker}
           renderCluster={this.renderCluster}
-          region={region}
+          initialRegion={region}
           zoomEnabled
         >
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
