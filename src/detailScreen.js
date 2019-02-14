@@ -7,6 +7,7 @@ import {
   Image,
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import PropTypes from 'prop-types';
 
 
 const styles = StyleSheet.create({
@@ -125,7 +126,10 @@ class secondDetial extends React.Component {
             <Text style={styles.PriceText}>料金</Text>
           </View>
           <View style={styles.PriceScreen}>
-            <Text style={styles.PriceText}>{params.planSampleRateFrom}円</Text>
+            <Text style={styles.PriceText}>
+              {params.planSampleRateFrom}
+              円
+            </Text>
           </View>
         </View>
 
@@ -141,5 +145,11 @@ class secondDetial extends React.Component {
     );
   }
 }
+
+secondDetial.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default withNavigation(secondDetial);
