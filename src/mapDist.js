@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import Modal from './modal';
 import global from './global';
 import touristSpotMarkerImg from '../assets/location.png';
+import DistHeaderLeft from './distHeaderLeft';
 
 import 'date-utils';
 
@@ -85,6 +86,7 @@ class MapDist extends React.Component {
     const { name } = navigation.getParam('dist', '観光地');
     return {
       title: name,
+      headerLeft: <DistHeaderLeft />,
     };
   };
 
@@ -184,7 +186,7 @@ class MapDist extends React.Component {
           animateClusters={false}
           renderMarker={this.renderMarker}
           renderCluster={this.renderCluster}
-          initialRegion={region}
+          region={region}
           zoomEnabled
         >
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
@@ -223,7 +225,7 @@ class MapDist extends React.Component {
   }
 }
 
-Map.propTypes = {
+MapDist.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
