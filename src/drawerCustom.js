@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     lineHeight: 25,
   },
   scroll: {
-    marginBottom: 110,
+    marginBottom: 64,
     color: 'white',
   },
 });
