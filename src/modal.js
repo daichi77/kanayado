@@ -4,8 +4,13 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modalbox';
-import SearchIcon1 from 'react-native-vector-icons/AntDesign';
-import { Container, Button, Text, Icon } from 'native-base';
+// import SearchIcon1 from 'react-native-vector-icons/AntDesign';
+import {
+  Container,
+  Button,
+  Text,
+  Icon,
+} from 'native-base';
 
 const styles = StyleSheet.create({
   modal: {
@@ -98,7 +103,10 @@ const ModalScreen = ({
                 <View style={{ width: '50%', height: '100%' }}>
                   <View style={styles.vertical}>
                     <View style={styles.background1}>
-                      <Text style={styles.text2}>¥{data.PlanSampleRateFrom}</Text>
+                      <Text style={styles.text2}>
+                        ¥
+                        {data.PlanSampleRateFrom}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -108,7 +116,7 @@ const ModalScreen = ({
                     <View style={styles.background2}>
                       <Button iconRight info onPress={detailScreen} style={styles.detialbutton}>
                         <Text>Next</Text>
-                        <Icon name='arrow-forward' />
+                        <Icon name="arrow-forward" />
                       </Button>
                     </View>
                   </View>
@@ -139,9 +147,9 @@ ModalScreen.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggleIsOpen: PropTypes.func.isRequired,
   detailScreen: PropTypes.func.isRequired,
-  data: PropTypes.shape({
-    data: PropTypes.object,
-  }).isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.object,
+  ).isRequired,
 };
 
 export default ModalScreen;

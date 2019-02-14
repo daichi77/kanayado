@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Container, Button, Text, Icon } from 'native-base';
+import PropTypes from 'prop-types';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -91,7 +93,7 @@ class secondDetial extends React.Component {
     const hotelArray2 = [];
     const url = params.hotelUrl;
     console.log(params.hotelName);
-
+    console.log(params.hotelUrl);
     for (s in params.hotelName) {
       if (hotelArray1.length < 13) {
         hotelArray1[s] = params.hotelName[s]
@@ -100,10 +102,8 @@ class secondDetial extends React.Component {
         hotelArray2[s] = params.hotelName[s]
       }
     }
-
     const hotel1 = hotelArray1.join('');
     const hotel2 = hotelArray2.join('');
-
     return (
       <Container>
         <View style={styles.container}>
@@ -143,5 +143,11 @@ class secondDetial extends React.Component {
     );
   }
 }
+
+secondDetial.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default withNavigation(secondDetial);
