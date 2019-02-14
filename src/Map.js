@@ -147,11 +147,8 @@ class Map extends React.Component {
     const location = await Location.getCurrentPositionAsync({});
     this.setState({
       current: {
-        // 動画用に21世紀美術館に変更
-        latitude: 36.560867000000002,
-        longitude: 136.65825799999999,
-        // latitude: location.coords.latitude,
-        // longitude: location.coords.longitude,
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
         latitudeDelta: 0,
         longitudeDelta: 0,
       },
