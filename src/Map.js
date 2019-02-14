@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 
-  mark_red: {
+  markRed: {
     width: 15,
     height: 15,
     marginTop: 5,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderRadius: 10,
   },
-  mark_blue: {
+  markBlue: {
     width: 15,
     height: 15,
     marginTop: 5,
@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     borderRadius: 10,
   },
-  marker_red: {
+  markerRed: {
     backgroundColor: 'red',
     padding: 5,
     borderRadius: 10,
   },
-  marker_blue: {
+  markerBlue: {
     backgroundColor: 'blue',
     padding: 5,
     borderRadius: 10,
@@ -199,8 +199,8 @@ class Map extends React.Component {
       const response = await fetch(url);
       const json = await response.json();
       touristSpotData = touristSpotData.concat(json.facilities);
-      if (json.next_page !== undefined) {
-        this.touristSpot(json.next_page);
+      if (json.nextPage !== undefined) {
+        this.touristSpot(json.nextPage);
       } else {
         this.setState({ touristFacilities: touristSpotData });
       }
@@ -434,9 +434,9 @@ class Map extends React.Component {
             justifyContent: 'flex-end',
           }}
           >
-            <View style={styles.mark_blue} />
+            <View style={styles.markBlue} />
             <Text style={styles.text1}>空室</Text>
-            <View style={styles.mark_red} />
+            <View style={styles.markRed} />
             <Text style={styles.text1}>満室</Text>
           </View>
           {
@@ -456,7 +456,7 @@ class Map extends React.Component {
                   key={lodgingFacility.HotelID}
                 >
                   <View
-                    style={lodgingFacility.State === 'vacancy' ? styles.marker_blue : styles.marker_red}
+                    style={lodgingFacility.State === 'vacancy' ? styles.markerBlue : styles.markerRed}
                   >
                     <Text style={styles.text}>
                       {title}
