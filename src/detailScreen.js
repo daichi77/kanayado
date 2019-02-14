@@ -20,15 +20,10 @@ const styles = StyleSheet.create({
   HotelName: {
     flex: 1,
     marginTop: 20,
-    marginLeft: 30,
+    alignItems: 'center',
   },
   HotelNameText: {
     fontSize: 25,
-    fontFamily: Platform.select({ios:'HiraMinProN-W3', android: 'serif'}),
-  },
-  HotelNameText2: {
-    fontSize: 25,
-    marginLeft: 30,
     fontFamily: Platform.select({ios:'HiraMinProN-W3', android: 'serif'}),
   },
   CallReserve: {
@@ -68,12 +63,11 @@ const styles = StyleSheet.create({
   },
   homeAddress: {
     marginTop: 30,
-    marginLeft: 30,
+    alignItems: 'center',
   },
   homeAddressText: {
     color: '#A6B395',
     fontSize: 20,
-    textAlign: 'left',
   },
 });
 
@@ -91,19 +85,24 @@ class secondDetial extends React.Component {
     const { params } = navigation.state;
     const hotelArray1 = [];
     const hotelArray2 = [];
+    const hotelArray3 = [];
     const url = params.hotelUrl;
     console.log(params.hotelName);
     console.log(params.hotelUrl);
     for (s in params.hotelName) {
       if (hotelArray1.length < 13) {
-        hotelArray1[s] = params.hotelName[s]
+        hotelArray1.push(params.hotelName[s]);
+      }
+      else if (hotelArray2.length < 13) {
+        hotelArray2.push(params.hotelName[s]);
       }
       else {
-        hotelArray2[s] = params.hotelName[s]
+        hotelArray3.push(params.hotelName[s]);
       }
     }
     const hotel1 = hotelArray1.join('');
     const hotel2 = hotelArray2.join('');
+    const hotel3 = hotelArray3.join('');
     return (
       <Container>
         <View style={styles.container}>
@@ -116,7 +115,8 @@ class secondDetial extends React.Component {
 
           <View style={styles.HotelName}>
             <Text style={styles.HotelNameText}>{ hotel1 }</Text>
-            <Text style={styles.HotelNameText2}>{ hotel2 }</Text>
+            <Text style={styles.HotelNameText}>{ hotel2 }</Text>
+            <Text style={styles.HotelNameText}>{ hotel3 }</Text>
           </View>
 
           <View style={styles.Price}>
