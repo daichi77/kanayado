@@ -107,7 +107,9 @@ const ModalScreen = ({
                 source={Reviewpng}
                 style={styles.review}
               />
-              <Text style={styles.text}>{ data.HotelReview}/5.0</Text>
+              <View>
+                {data.HotelReview === '' ? <Text style={styles.text}>レビューなし</Text> : <Text style={styles.text}>{data.HotelReview}/5.0</Text>}
+              </View>
             </View>
 
             <View style={{ width: '100%', height: '40%' }}>
@@ -142,6 +144,7 @@ const ModalScreen = ({
     </Container>
   </Modal>
 );
+
 
 ModalScreen.propTypes = {
   isOpen: PropTypes.bool.isRequired,
