@@ -1,3 +1,6 @@
 node_modules/**/*
 .expo/*
 npm-debug.*
+
+# JetBrains IDE
+.idea

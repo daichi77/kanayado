@@ -1,8 +1,8 @@
 import { createDrawerNavigator } from 'react-navigation';
 import { Dimensions } from 'react-native';
 import Stack from './Stack';
-import DrawerCustom from './drawerCustom';
 import MapDist from './mapDist';
+import DrawerCustom from './drawerCustom';
 import Detail from './detailScreen';
 import Hotel from './Hotelweb';
 
