@@ -236,6 +236,7 @@ class Map extends React.Component {
             const hotelAddress = hotels[i].getElementsByTagName('HotelAddress')[0].textContent;
             const hotelURL = hotels[i].getElementsByTagName('HotelDetailURL')[0].textContent;
             const planSampleRateFrom = hotels[i].getElementsByTagName('SampleRateFrom')[0].textContent;
+            const hotelReview = hotels[i].getElementsByTagName('Rating')[0].textContent;
             if (hotels[i].getElementsByTagName('PictureURL')[0] !== undefined) {
               pictureURL = hotels[i].getElementsByTagName('PictureURL')[0].textContent;
             }
@@ -251,6 +252,7 @@ class Map extends React.Component {
               PlanSampleRateFrom: planSampleRateFrom,
               PictureURL: pictureURL,
               HotelUrl: hotelURL,
+              HotelReview: hotelReview,
               X: wx,
               Y: wy,
               State: 'noVacancy',
@@ -293,6 +295,7 @@ class Map extends React.Component {
             const sampleRate = hotels[i].getElementsByTagName('SampleRate')[0].textContent;
             const hotelAddress = hotels[i].getElementsByTagName('HotelAddress')[0].textContent;
             const hotelURL = hotels[i].getElementsByTagName('HotelDetailURL')[0].textContent;
+            const hotelReview = hotels[i].getElementsByTagName('Rating')[0].textContent;
             if (hotels[i].getElementsByTagName('PictureURL')[0] !== undefined) {
               pictureURL = hotels[i].getElementsByTagName('PictureURL')[0].textContent;
             }
@@ -308,6 +311,7 @@ class Map extends React.Component {
               HotelAddress: hotelAddress,
               HotelUrl: hotelURL,
               PictureURL: pictureURL,
+              HotelReview: hotelReview,
               X: wx,
               Y: wy,
               State: 'vacancy',
