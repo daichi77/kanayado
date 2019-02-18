@@ -76,7 +76,12 @@ const ModalScreen = ({
       <View style={{ width: '60%', height: '100%' }}>
         <View style={styles.vertical}>
           <View style={{
-            width: '100%', height: '30%', borderColor: '#BDBDBD', borderStyle: 'solid', borderBottomWidth: 1, borderTopWidth: 5,
+            width: '100%',
+            height: '30%',
+            borderColor: '#BDBDBD',
+            borderStyle: 'solid',
+            borderBottomWidth: 1,
+            borderTopWidth: 5,
           }}
           >
             <Text style={styles.blackText}>{data.HotelName}</Text>
@@ -98,7 +103,11 @@ const ModalScreen = ({
                       size={30}
                       onPress={detailScreen}
                       style={{
-                        width: '100%', height: '100%', textAlign: 'center', marginTop: '10%', color: '#FFFFFF',
+                        width: '100%',
+                        height: '100%',
+                        textAlign: 'center',
+                        marginTop: '10%',
+                        color: '#FFFFFF',
                       }}
                     />
                   </View>
@@ -126,9 +135,9 @@ ModalScreen.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggleIsOpen: PropTypes.func.isRequired,
   detailScreen: PropTypes.func.isRequired,
-  data: PropTypes.shape({
-    data: PropTypes.object,
-  }).isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.object,
+  ).isRequired,
 };
 
 export default ModalScreen;

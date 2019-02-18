@@ -92,7 +92,7 @@ class secondDetial extends React.Component {
         <View style={styles.image}>
           <Image style={{ flex: 3 }} source={{ uri: params.pictureURL }} />
         </View>
-        <View style={styles.line} />
+        <View style={styles.Line} />
         <View style={styles.HotelName}>
           <Text style={styles.HotelNameText}>{params.hotelName}</Text>
         </View>
@@ -112,7 +112,7 @@ class secondDetial extends React.Component {
           <View style={styles.priceScreen}>
             <Text style={styles.priceText}>
               {params.planSampleRateFrom}
-円
+              円
             </Text>
           </View>
         </View>
@@ -129,7 +129,9 @@ class secondDetial extends React.Component {
 }
 
 secondDetial.propTypes = {
-  navigation: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default withNavigation(secondDetial);
