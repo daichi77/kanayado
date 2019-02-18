@@ -5,14 +5,9 @@ import PropTypes from 'prop-types';
 import SearchIcon from 'react-native-vector-icons/AntDesign';
 
 const HeaderLeft = ({ navigation }) => (
-  <TouchableOpacity
-    onPress={() => {
-      navigation.openDrawer();
-      navigation.navigate('MainScreen');
-    }}
-  >
+  <TouchableOpacity onPress={() => navigation.goBack()}>
     <SearchIcon
-      name="search1"
+      name="left"
       size={25}
       style={{ marginLeft: 15 }}
     />
