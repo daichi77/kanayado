@@ -26,6 +26,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 25,
   },
+  scroll: {
+    marginBottom: 64,
+    color: 'white',
+  },
 });
 
 class DrawerCustom extends React.Component {
@@ -88,6 +92,7 @@ class DrawerCustom extends React.Component {
               </View>
             )}
           />
+          <Text style={styles.scroll}>scrollのバグを解決するためのText</Text>
         </ScrollView>
       </SafeAreaView>
     );
