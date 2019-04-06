@@ -4,3 +4,6 @@ npm-debug.*
 
 # JetBrains IDE
 .idea
+
+# react-native-config
+.env
