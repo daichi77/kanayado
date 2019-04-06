@@ -13,6 +13,7 @@ import global from './global';
 import touristSpotMarkerImg from '../assets/location.png';
 import currentPlaceImg from '../assets/currentPlace.png';
 import 'date-utils';
+import { API_KEY } from 'react-native-dotenv';
 
 let hotelsData = [];
 let vacancysData = [];
@@ -21,7 +22,8 @@ let touristSpotData = [];
 let data = [];
 let start1 = 1;
 let start2 = 1;
-const jalanKey = 'and16735d417c1';
+console.log(API_KEY);
+const jalanKey = API_KEY;
 let timeData = 0;
 
 const styles = StyleSheet.create({
