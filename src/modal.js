@@ -98,7 +98,7 @@ const ModalScreen = ({
             <View style={{
               width: '100%', height: '30%', borderColor: '#BDBDBD', borderStyle: 'solid', borderBottomWidth: 1, borderTopWidth: 5,
             }}
-            > 
+            >
               <Text style={styles.text1}>{data.HotelName}</Text>
             </View>
 
@@ -108,7 +108,12 @@ const ModalScreen = ({
                 style={styles.review}
               />
               <View>
-                {data.HotelReview === '' ? <Text style={styles.text}>レビューなし</Text> : <Text style={styles.text}>{data.HotelReview}/5.0</Text>}
+                {data.HotelReview === '' ? <Text style={styles.text}>レビューなし</Text> : (
+                  <Text style={styles.text}>
+                    {data.HotelReview}
+/5.0
+                  </Text>
+                )}
               </View>
             </View>
 

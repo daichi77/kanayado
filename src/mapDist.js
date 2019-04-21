@@ -8,7 +8,6 @@ import Modal from './modal';
 import global from './global';
 import touristSpotMarkerImg from '../assets/location.png';
 import DistHeaderLeft from './distHeaderLeft';
-
 import 'date-utils';
 
 let data = [];
@@ -20,11 +19,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
-
   mapview: {
     ...StyleSheet.absoluteFillObject,
   },
-
   mark_red: {
     width: 15,
     height: 15,
@@ -109,12 +106,12 @@ class MapDist extends React.Component {
     this.setState({ region: getregion });
   }
 
-  toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }))
+  toggleIsOpen = () => this.setState(state => ({ isOpen: !state.isOpen }));
 
   gotoElementScreen = (lodgingFacilitie) => {
     data = lodgingFacilitie;
     this.setState({ isOpen: true });
-  }
+  };
 
   detailScreen = () => {
     const { navigation } = this.props;
@@ -125,17 +122,15 @@ class MapDist extends React.Component {
       planSampleRateFrom: data.PlanSampleRateFrom,
       hotelUrl: data.HotelUrl,
     });
-  }
+  };
 
-  // eslint-disable-next-line class-methods-use-this
   convertPoints(data1) {
+    let array = [];
     const results = {
       type: 'MapCollection',
       features: [],
     };
-    // eslint-disable-next-line array-callback-return
     data1.map((value) => {
-      // eslint-disable-next-line no-undef
       array = {
         value,
         location: {
@@ -143,8 +138,8 @@ class MapDist extends React.Component {
           longitude: value.coordinates.longitude,
         },
       };
-      // eslint-disable-next-line no-undef
-      results.features.push(array);
+      const featuresArray = results.features.push(array);
+      return featuresArray;
     });
     return results.features;
   }
@@ -156,17 +151,15 @@ class MapDist extends React.Component {
       image={touristSpotMarkerImg}
       title={pin.value.name}
     />
-  )
+  );
 
   renderCluster = (cluster, onPress) => (
     <Marker coordinate={cluster.coordinate} onPress={onPress}>
       <View style={styles.clusterContainer}>
-        <Text style={styles.counterText}>
-          {cluster.pointCount}
-        </Text>
+        <Text style={styles.counterText}>{cluster.pointCount}</Text>
       </View>
     </Marker>
-  )
+  );
 
   render() {
     const { isOpen, region } = this.state;
@@ -194,30 +187,31 @@ class MapDist extends React.Component {
             <View style={styles.mark_red} />
             <Text style={styles.text1}>満室</Text>
           </View>
-          {
-            // 宿泊施設にピンを配置
-            global.lodgingF.map((lodgingFacilitie) => {
-              let title = '値段';
-              if (lodgingFacilitie.HotelID !== undefined) {
-                title = lodgingFacilitie.PlanSampleRateFrom;
-              }
-              return (
-                <Marker
-                  coordinate={{
-                    latitude: lodgingFacilitie.Y,
-                    longitude: lodgingFacilitie.X,
-                  }}
-                  onPress={() => this.gotoElementScreen(lodgingFacilitie)}
-                  key={lodgingFacilitie.HotelID}
+          {// 宿泊施設にピンを配置
+          global.lodgingF.map((lodgingFacilitie) => {
+            let title = '値段';
+            if (lodgingFacilitie.HotelID !== undefined) {
+              title = lodgingFacilitie.PlanSampleRateFrom;
+            }
+            return (
+              <Marker
+                coordinate={{
+                  latitude: lodgingFacilitie.Y,
+                  longitude: lodgingFacilitie.X,
+                }}
+                onPress={() => this.gotoElementScreen(lodgingFacilitie)}
+                key={lodgingFacilitie.HotelID}
+              >
+                <View
+                  style={
+                    lodgingFacilitie.State === 'vacancy' ? styles.marker_blue : styles.marker_red
+                  }
                 >
-                  <View style={lodgingFacilitie.State === 'vacancy' ? styles.marker_blue : styles.marker_red}>
-                    <Text style={styles.text}>
-                      {title}
-                    </Text>
-                  </View>
-                </Marker>);
-            })
-          }
+                  <Text style={styles.text}>{title}</Text>
+                </View>
+              </Marker>
+            );
+          })}
         </MapView>
       </View>
     );

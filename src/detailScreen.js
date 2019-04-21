@@ -6,9 +6,10 @@ import {
   Platform,
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { Container, Button, Text, Icon } from 'native-base';
+import {
+  Container, Button, Text, Icon,
+} from 'native-base';
 import PropTypes from 'prop-types';
-
 
 const styles = StyleSheet.create({
   container: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   },
   HotelNameText: {
     fontSize: 25,
-    fontFamily: Platform.select({ios:'HiraMinProN-W3', android: 'serif'}),
+    fontFamily: Platform.select({ ios: 'HiraMinProN-W3', android: 'serif' }),
   },
   CallReserve: {
     flex: 1,
@@ -77,7 +78,7 @@ class secondDetial extends React.Component {
     navigation.navigate('HotelWeb', {
       hotelUrl: url,
     });
-    console.log(url);
+    // console.log(url);
   }
 
   render() {
@@ -89,14 +90,12 @@ class secondDetial extends React.Component {
     const url = params.hotelUrl;
     console.log(params.hotelName);
     console.log(params.hotelUrl);
-    for (s in params.hotelName) {
+    for (const s in params.hotelName) {
       if (hotelArray1.length < 13) {
         hotelArray1.push(params.hotelName[s]);
-      }
-      else if (hotelArray2.length < 13) {
+      } else if (hotelArray2.length < 13) {
         hotelArray2.push(params.hotelName[s]);
-      }
-      else {
+      } else {
         hotelArray3.push(params.hotelName[s]);
       }
     }
@@ -108,7 +107,7 @@ class secondDetial extends React.Component {
         <View style={styles.container}>
           <View style={styles.image}>
             <Image
-              style={{flex: 3}}
+              style={{ flex: 3 }}
               source={{ uri: params.pictureURL }}
             />
           </View>
@@ -121,23 +120,23 @@ class secondDetial extends React.Component {
 
           <View style={styles.Price}>
             <View style={styles.PriceScreen}>
-              <Text style={styles.PriceText}>¥{ params.planSampleRateFrom }</Text>
+              <Text style={styles.PriceText}>
+¥
+                { params.planSampleRateFrom }
+              </Text>
             </View>
             <View style={styles.mbutton}>
               <Button iconRight info onPress={() => this.Hotelweb(url)} style={styles.button}>
                 <Text> ネット予約 </Text>
-                <Icon name='arrow-forward' />
+                <Icon name="arrow-forward" />
               </Button>
             </View>
           </View>
-
-
           <View style={styles.Home}>
             <View style={styles.homeAddress}>
               <Text style={styles.homeAddressText}>{ params.hotelAddress}</Text>
             </View>
           </View>
-
         </View>
       </Container>
     );
