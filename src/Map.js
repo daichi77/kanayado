@@ -24,7 +24,7 @@ let start1 = 1;
 let start2 = 1;
 console.log(API_KEY);
 const jalanKey = API_KEY;
-let timeData = 0;
+let timeData = 20190509;
 
 const styles = StyleSheet.create({
   container: {
