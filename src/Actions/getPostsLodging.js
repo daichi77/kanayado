@@ -1,5 +1,6 @@
 import { DOMParser } from 'xmldom';
 import 'date-utils';
+import { API_KEY } from 'react-native-dotenv';
 
 export const GET_POSTS_REQUEST = 'GET_POSTS_REQUEST';
 const getPostsRequest = () => {
@@ -31,8 +32,8 @@ let lodgingSpotData = [];
 let data = [];
 let start1 = 1;
 let start2 = 1;
-const jalanKey = 'and16735d417c1';
-let timeData = 20190515;
+const jalanKey = API_KEY;
+let timeData = 20190526;
 
 lodgingSpot = (url, dispatch) => {
   const hotelData = [];
