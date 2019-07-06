@@ -3,10 +3,11 @@ import { createStackNavigator } from 'react-navigation';
 import HeaderLeft from './headerLeft';
 import HeaderLeftBack from './headerLeftBack';
 import HeaderRight from './headerRight';
-import Map from './Map';
-import MapDist from './mapDist';
-import Detail from './detailScreen';
-import Hotel from './Hotelweb';
+// import MapDist from './mapDist';
+// import Detail from './detailScreen';
+// import Hotel from './Hotelweb';
+import Map from './Container/Map';
+import Dummy from './dummyComponent';
 
 const Stack = createStackNavigator({
   MainScreen: {
@@ -18,17 +19,17 @@ const Stack = createStackNavigator({
     }),
   },
   Dist: {
-    screen: MapDist,
+    screen: Dummy,
   },
   DetailScreen: {
-    screen: Detail,
+    screen: Dummy,
     navigationOptions: () => ({
       title: '詳細',
       headerLeft: <HeaderLeftBack />,
     }),
   },
   HotelWeb: {
-    screen: Hotel,
+    screen: Dummy,
     navigationOptions: () => ({
       title: 'ネット予約',
       headerLeft: <HeaderLeftBack />,

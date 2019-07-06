@@ -33,7 +33,7 @@ let data = [];
 let start1 = 1;
 let start2 = 1;
 const jalanKey = API_KEY;
-let timeData = 20190526;
+let timeData = 20190726;
 
 lodgingSpot = (url, dispatch) => {
   const hotelData = [];

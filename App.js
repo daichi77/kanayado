@@ -1,6 +1,6 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -11,9 +11,11 @@ import { getPostsLodging } from './src/Actions/getPostsLodging';
 
 const AppContainer = createAppContainer(Drawer);
 
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
   reducer,
-  applyMiddleware(thunk, logger),
+  composeEnhancer(applyMiddleware(thunk)),
 );
 
 const doEverything = () => {
