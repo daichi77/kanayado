@@ -8,7 +8,7 @@ const HeaderLeft = ({ navigation }) => (
   <TouchableOpacity
     onPress={() => {
       navigation.openDrawer();
-      navigation.navigate('MainScreen');
+      // navigation.navigate('MainScreen');
     }}
   >
     <SearchIcon
