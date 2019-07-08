@@ -3,6 +3,7 @@ import {
   View, Text, StyleSheet,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import Modal from './Container/madal';
 import touristSpotMarkerImg from '../assets/location.png';
 
 const styles = StyleSheet.create({
@@ -91,63 +92,72 @@ const styles = StyleSheet.create({
 });
 
 class Map extends React.Component {
+
+  comeOutModal = (lodgingFacility) => {
+    const { modalIsOpen } = this.props;
+    modalIsOpen();
+  };
+
   render() {
-    const { lodgingdata, tourdata } = this.props;
+    const { lodgingdata, tourdata, } = this.props;
     if (lodgingdata) {
       return (
-        <MapView
-          style={styles.mapView}
-        >
-          {
-            lodgingdata.map((lodgingFacility) => {
-              let title = '値段';
-              if (lodgingFacility.HotelID !== undefined) {
-                title = lodgingFacility.PlanSampleRateFrom;
-              }
-              return (
-                <Marker
-                  coordinate={{
-                    latitude: lodgingFacility.Y,
-                    longitude: lodgingFacility.X,
-                  }}
-                  onPress={() => this.gotoElementScreen(lodgingFacility)}
-                  key={lodgingFacility.HotelID}
-                >
-                  <View
-                    style={lodgingFacility.State === 'vacancy' ? styles.markerBlue : styles.markerRed}
+        <View style={styles.container}>
+          <Modal />
+          <MapView
+            style={styles.mapView}
+          >
+            {
+              lodgingdata.map((lodgingFacility) => {
+                let title = '値段';
+                if (lodgingFacility.HotelID !== undefined) {
+                  title = lodgingFacility.PlanSampleRateFrom;
+                }
+                return (
+                  <Marker
+                    coordinate={{
+                      latitude: lodgingFacility.Y,
+                      longitude: lodgingFacility.X,
+                    }}
+                    onPress={() => this.comeOutModal(lodgingFacility)}
+                    key={lodgingFacility.HotelID}
                   >
-                    <Text style={styles.text}>
-                      {title}
-                    </Text>
-                  </View>
-                </Marker>
-              );
-            })
-          }
-          {
-            // 観光施設にピンを配置
-            tourdata.map((touristFacilitie) => {
-              let title = '観光地名';
-              if (touristFacilitie.id !== undefined) {
-                title = touristFacilitie.name;
-              }
-              return (
-                <Marker
-                  coordinate={{
-                    latitude: touristFacilitie.coordinates.latitude,
-                    longitude: touristFacilitie.coordinates.longitude,
-                  }}
-                  title={title}
-                  key={touristFacilitie.id}
-                  image={touristSpotMarkerImg}
-                />
-              );
-            })
+                    <View
+                      style={lodgingFacility.State === 'vacancy' ? styles.markerBlue : styles.markerRed}
+                    >
+                      <Text style={styles.text}>
+                        {title}
+                      </Text>
+                    </View>
+                  </Marker>
+                );
+              })
+            }
+            {
+              // 観光施設にピンを配置
+              tourdata.map((touristFacilitie) => {
+                let title = '観光地名';
+                if (touristFacilitie.id !== undefined) {
+                  title = touristFacilitie.name;
+                }
+                return (
+                  <Marker
+                    coordinate={{
+                      latitude: touristFacilitie.coordinates.latitude,
+                      longitude: touristFacilitie.coordinates.longitude,
+                    }}
+                    title={title}
+                    key={touristFacilitie.id}
+                    image={touristSpotMarkerImg}
+                  />
+                );
+              })
 
-          }
-        </MapView>
+            }
+          </MapView>
+        </View>
       );
-    } // else {
+    } // else
     return (
       <MapView
         style={styles.mapView}

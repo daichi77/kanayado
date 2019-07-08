@@ -4,7 +4,7 @@ const initalState = {
   text: '',
 };
 
-const postsTour = (state = initalState, action) => {
+const sendFilterText = (state = initalState, action) => {
   switch (action.type) {
     case SEND_FILTER_TEXT:
       return {
@@ -16,4 +16,4 @@ const postsTour = (state = initalState, action) => {
   }
 };
 
-export default postsTour;
+export default sendFilterText;

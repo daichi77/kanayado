@@ -71,7 +71,6 @@ const DrawerCustom = ({ tourdata, navigation, filterText }) => {
             </View>
           )}
         />
-        {console.log(filterText)}
         <Text style={styles.scroll}>scrollのバグを解決するためのText</Text>
       </ScrollView>
     </SafeAreaView>
