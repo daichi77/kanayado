@@ -6,6 +6,7 @@ const mapStateToProps = (state) => {
   console.log(state.modalIsOpen.isOpen);
   return {
     isOpen: state.modalIsOpen.isOpen,
+    hotelData: state.hotelData.hotelData,
   };
 };
 

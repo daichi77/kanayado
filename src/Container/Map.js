@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { modalIsOpen } from '../Actions/index';
+import { modalIsOpen, saveHotelData } from '../Actions/index';
 import Map from '../Map';
 
 const mapStateToProps = (state) => {
@@ -12,6 +12,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   modalIsOpen() {
     dispatch(modalIsOpen());
+  },
+  saveHotelData(hotelData) {
+    dispatch(saveHotelData(hotelData));
   },
 });
 

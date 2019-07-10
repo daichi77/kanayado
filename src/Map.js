@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
 class Map extends React.Component {
 
   comeOutModal = (lodgingFacility) => {
-    const { modalIsOpen } = this.props;
+    const { modalIsOpen, saveHotelData } = this.props;
+    saveHotelData(lodgingFacility);
     modalIsOpen();
   };
 

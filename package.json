@@ -15,7 +15,7 @@
     "date-utils": "^1.2.21",
     "expo": "^32.0.0",
     "expo-cli": "^2.6.5",
-    "native-base": "^2.11.0",
+    "native-base": "^2.12.1",
     "prop-types": "^15.6.2",
     "react": "^16.8.3",
     "react-devtools": "^3.6.0",

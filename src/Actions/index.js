@@ -22,3 +22,13 @@ export const toggelModalIsOpen = () => {
     type: TOGGLE_MODAL_IS_OPEN,
   };
 };
+
+export const SAVE_HOTEL_DATA = 'SAVE_HOTEL_DATA';
+export const saveHotelData = (hotelData) => {
+  return {
+    type: SAVE_HOTEL_DATA,
+    payload: {
+      hotelData,
+    },
+  };
+};
