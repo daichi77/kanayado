@@ -9,6 +9,7 @@ import {
   Text,
   Icon,
 } from 'native-base';
+import { withNavigation } from 'react-navigation';
 import Reviewpng from '../assets/review.png';
 
 const styles = StyleSheet.create({
@@ -73,83 +74,92 @@ const styles = StyleSheet.create({
 
 const noPhotoImg = require('../assets/noPhoto.png');
 
-const ModalScreen = ({
-  isOpen, toggelModalIsOpen, hotelData,
-}) => {
-  if (hotelData) {
-    return (
-      <Modal
-        isOpen={isOpen}
-        onClosed={toggelModalIsOpen}
-        backdrop={false}
-        style={styles.modal}
-        position="bottom"
-      >
-        <Container>
-          <View style={styles.horizontal}>
-            <View style={{ width: '40%', height: '100%' }}>
-              <Image
-                source={hotelData.hotelData.PictureURL === '' ? noPhotoImg : { uri: hotelData.hotelData.PictureURL }}
-                style={{ width: '100%', height: '100%' }}
-              />
-              {console.log(hotelData.hotelData.PictureURL)}
-            </View>
 
-            <View style={{ width: '60%', height: '100%' }}>
-              <View style={styles.vertical}>
-                <View style={{
-                  width: '100%', height: '30%', borderColor: '#BDBDBD', borderStyle: 'solid', borderBottomWidth: 1, borderTopWidth: 5,
-                }}
-                >
-                  <Text style={styles.text1}>{hotelData.hotelData.HotelName}</Text>
-                </View>
+class ModalScreen extends React.Component {
 
-                <View style={styles.review}>
-                  <Image
-                    source={Reviewpng}
-                    style={styles.review}
-                  />
-                  <View>
-                    {hotelData.hotelData.HotelReview === '' ? <Text style={styles.text}>レビューなし</Text> : <Text style={styles.text}>{hotelData.hotelData.HotelReview}/5.0</Text>}
+  detailScreen = () => {
+    const { navigation } = this.props;
+    navigation.navigate('DetailScreen');
+  };
+
+  render() {
+    const { isOpen, toggelModalIsOpen, hotelData, } = this.props;
+
+    if (hotelData) {
+      return (
+        <Modal
+          isOpen={isOpen}
+          onClosed={toggelModalIsOpen}
+          backdrop={false}
+          style={styles.modal}
+          position="bottom"
+        >
+          <Container>
+            <View style={styles.horizontal}>
+              <View style={{ width: '40%', height: '100%' }}>
+                <Image
+                  source={hotelData.hotelData.PictureURL === '' ? noPhotoImg : { uri: hotelData.hotelData.PictureURL }}
+                  style={{ width: '100%', height: '100%' }}
+                />
+                {console.log(hotelData.hotelData.PictureURL)}
+              </View>
+
+              <View style={{ width: '60%', height: '100%' }}>
+                <View style={styles.vertical}>
+                  <View style={{
+                    width: '100%', height: '30%', borderColor: '#BDBDBD', borderStyle: 'solid', borderBottomWidth: 1, borderTopWidth: 5,
+                  }}
+                  >
+                    <Text style={styles.text1}>{hotelData.hotelData.HotelName}</Text>
                   </View>
-                </View>
 
-                <View style={{ width: '100%', height: '40%' }}>
-                  <View style={styles.horizontal}>
-                    <View style={{ width: '50%', height: '100%' }}>
-                      <View style={styles.vertical}>
-                        <View style={styles.background1}>
-                          <Text style={styles.text2}>
-                            ¥
+                  <View style={styles.review}>
+                    <Image
+                      source={Reviewpng}
+                      style={styles.review}
+                    />
+                    <View>
+                      {hotelData.hotelData.HotelReview === '' ? <Text style={styles.text}>レビューなし</Text> : <Text style={styles.text}>{hotelData.hotelData.HotelReview}/5.0</Text>}
+                    </View>
+                  </View>
+
+                  <View style={{ width: '100%', height: '40%' }}>
+                    <View style={styles.horizontal}>
+                      <View style={{ width: '50%', height: '100%' }}>
+                        <View style={styles.vertical}>
+                          <View style={styles.background1}>
+                            <Text style={styles.text2}>
+                              ¥
                             {hotelData.hotelData.PlanSampleRateFrom}
-                          </Text>
+                            </Text>
+                          </View>
                         </View>
                       </View>
-                    </View>
 
-                    <View style={{ width: '50%', height: '100%', position: 'relative' }}>
-                      <View style={styles.vertical}>
-                        <View style={styles.background2}>
-                          <Button iconRight info onPress={() => console.log('sucsess')} style={styles.detialbutton}>
-                            <Text>Next</Text>
-                            <Icon name="arrow-forward" />
-                          </Button>
+                      <View style={{ width: '50%', height: '100%', position: 'relative' }}>
+                        <View style={styles.vertical}>
+                          <View style={styles.background2}>
+                            <Button iconRight info onPress={this.detailScreen} style={styles.detialbutton}>
+                              <Text>Next</Text>
+                              <Icon name="arrow-forward" />
+                            </Button>
+                          </View>
                         </View>
                       </View>
                     </View>
                   </View>
-                </View>
 
+                </View>
               </View>
             </View>
-          </View>
-        </Container>
-      </Modal>
+          </Container>
+        </Modal>
+      );
+    } // else {
+    return (
+      <Text>nodata</Text>
     );
-  } // else {
-  return (
-    <Text>nodata</Text>
-  );
-};
+  }
+}
 
-export default ModalScreen;
+export default withNavigation(ModalScreen);

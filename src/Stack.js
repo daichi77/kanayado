@@ -4,7 +4,7 @@ import HeaderLeft from './headerLeft';
 import HeaderLeftBack from './headerLeftBack';
 import HeaderRight from './headerRight';
 // import MapDist from './mapDist';
-// import Detail from './detailScreen';
+import Detail from './Container/detailScreen';
 // import Hotel from './Hotelweb';
 import Map from './Container/Map';
 import Dummy from './dummyComponent';
@@ -22,7 +22,7 @@ const Stack = createStackNavigator({
     screen: Dummy,
   },
   DetailScreen: {
-    screen: Dummy,
+    screen: Detail,
     navigationOptions: () => ({
       title: '詳細',
       headerLeft: <HeaderLeftBack />,

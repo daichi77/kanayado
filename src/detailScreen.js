@@ -5,10 +5,12 @@ import {
   Image,
   Platform,
 } from 'react-native';
-import { withNavigation } from 'react-navigation';
-import { Container, Button, Text, Icon } from 'native-base';
-import PropTypes from 'prop-types';
-
+import {
+  Container,
+  Button,
+  Text,
+  Icon,
+} from 'native-base';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
   },
   HotelNameText: {
     fontSize: 25,
-    fontFamily: Platform.select({ios:'HiraMinProN-W3', android: 'serif'}),
+    fontFamily: Platform.select({ ios: 'HiraMinProN-W3', android: 'serif' }),
   },
   CallReserve: {
     flex: 1,
@@ -71,83 +73,72 @@ const styles = StyleSheet.create({
   },
 });
 
-class secondDetial extends React.Component {
-  Hotelweb = (url) => {
-    const { navigation } = this.props;
+const DetailScreen = ({ hotelData, navigation }) => {
+  const Hotelweb = (url) => {
     navigation.navigate('HotelWeb', {
       hotelUrl: url,
     });
     console.log(url);
-  }
+  };
 
-  render() {
-    const { navigation } = this.props;
-    const { params } = navigation.state;
-    const hotelArray1 = [];
-    const hotelArray2 = [];
-    const hotelArray3 = [];
-    const url = params.hotelUrl;
-    console.log(params.hotelName);
-    console.log(params.hotelUrl);
-    for (s in params.hotelName) {
-      if (hotelArray1.length < 13) {
-        hotelArray1.push(params.hotelName[s]);
-      }
-      else if (hotelArray2.length < 13) {
-        hotelArray2.push(params.hotelName[s]);
-      }
-      else {
-        hotelArray3.push(params.hotelName[s]);
-      }
+  const hotelArray1 = [];
+  const hotelArray2 = [];
+  const hotelArray3 = [];
+  const url = hotelData.hotelData.HotelUrl;
+  console.log(hotelData.hotelData.HotelName);
+  console.log(hotelData.hotelData.HotelUrl);
+  for (s in hotelData.hotelData.HotelName) {
+    if (hotelArray1.length < 13) {
+      hotelArray1.push(hotelData.hotelData.HotelName[s]);
     }
-    const hotel1 = hotelArray1.join('');
-    const hotel2 = hotelArray2.join('');
-    const hotel3 = hotelArray3.join('');
-    return (
-      <Container>
-        <View style={styles.container}>
-          <View style={styles.image}>
-            <Image
-              style={{flex: 3}}
-              source={{ uri: params.pictureURL }}
-            />
-          </View>
-
-          <View style={styles.HotelName}>
-            <Text style={styles.HotelNameText}>{ hotel1 }</Text>
-            <Text style={styles.HotelNameText}>{ hotel2 }</Text>
-            <Text style={styles.HotelNameText}>{ hotel3 }</Text>
-          </View>
-
-          <View style={styles.Price}>
-            <View style={styles.PriceScreen}>
-              <Text style={styles.PriceText}>¥{ params.planSampleRateFrom }</Text>
-            </View>
-            <View style={styles.mbutton}>
-              <Button iconRight info onPress={() => this.Hotelweb(url)} style={styles.button}>
-                <Text> ネット予約 </Text>
-                <Icon name='arrow-forward' />
-              </Button>
-            </View>
-          </View>
-
-
-          <View style={styles.Home}>
-            <View style={styles.homeAddress}>
-              <Text style={styles.homeAddressText}>{ params.hotelAddress}</Text>
-            </View>
-          </View>
-
-        </View>
-      </Container>
-    );
+    else if (hotelArray2.length < 13) {
+      hotelArray2.push(hotelData.hotelData.HotelName[s]);
+    }
+    else {
+      hotelArray3.push(hotelData.hotelData.HotelName[s]);
+    }
   }
-}
+  const hotel1 = hotelArray1.join('');
+  const hotel2 = hotelArray2.join('');
+  const hotel3 = hotelArray3.join('');
+  return (
+    <Container>
+      <View style={styles.container}>
+        <View style={styles.image}>
+          <Image
+            style={{ flex: 3 }}
+            source={{ uri: hotelData.hotelData.PictureURL }}
+          />
+        </View>
 
-secondDetial.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
+        <View style={styles.HotelName}>
+          <Text style={styles.HotelNameText}>{hotel1}</Text>
+          <Text style={styles.HotelNameText}>{hotel2}</Text>
+          <Text style={styles.HotelNameText}>{hotel3}</Text>
+        </View>
+
+        <View style={styles.Price}>
+          <View style={styles.PriceScreen}>
+            <Text style={styles.PriceText}>¥{hotelData.hotelData.PlanSampleRateFrom}</Text>
+          </View>
+          <View style={styles.mbutton}>
+            <Button iconRight info onPress={() => Hotelweb(url)} style={styles.button}>
+              <Text> ネット予約 </Text>
+              <Icon name="arrow-forward" />
+            </Button>
+          </View>
+        </View>
+
+
+        <View style={styles.Home}>
+          <View style={styles.homeAddress}>
+            <Text style={styles.homeAddressText}>{hotelData.hotelData.HotelAddress}</Text>
+          </View>
+        </View>
+
+      </View>
+    </Container>
+  );
 };
 
-export default withNavigation(secondDetial);
+export default DetailScreen;
