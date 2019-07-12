@@ -2,6 +2,7 @@ import React from 'react';
 import {
   View, Text, StyleSheet,
 } from 'react-native';
+import { BarIndicator } from 'react-native-indicators';
 import MapView, { Marker } from 'react-native-maps';
 import Modal from './Container/madal';
 import touristSpotMarkerImg from '../assets/location.png';
@@ -160,15 +161,7 @@ class Map extends React.Component {
       );
     } // else
     return (
-      <MapView
-        style={styles.mapView}
-        initialRegion={{
-          latitude: 36.5780818,
-          longitude: 136.6478206,
-          latitudeDelta: 0.00922,
-          longitudeDelta: 0.00521,
-        }}
-      />
+      <BarIndicator />
     );
   }
 }
