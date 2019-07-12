@@ -2,10 +2,13 @@ import React from 'react';
 import {
   View, Text, StyleSheet,
 } from 'react-native';
+import ClusteredMapView from 'react-native-maps-super-cluster';
 import { BarIndicator } from 'react-native-indicators';
 import MapView, { Marker } from 'react-native-maps';
 import Modal from './Container/madal';
 import touristSpotMarkerImg from '../assets/location.png';
+
+let data1 = null;
 
 const styles = StyleSheet.create({
   container: {
@@ -100,15 +103,76 @@ class Map extends React.Component {
     modalIsOpen();
   };
 
+  setMapRef = (clusteredMap) => {
+    this.mapView = clusteredMap.getMapRef();
+  };
+
+  // eslint-disable-next-line arrow-parens
+  convertPoints = data => {
+    const results = {
+      type: 'MapCollection',
+      features: [],
+    };
+    // eslint-disable-next-line arrow-parens
+    data.map(value => {
+      const array = {
+        value,
+        location: {
+          latitude: value.coordinates.latitude,
+          longitude: value.coordinates.longitude,
+        },
+      };
+      results.features.push(array);
+    });
+    return results.features;
+  }
+
+  renderMarker = pin => (
+    <Marker
+      key={pin.value.id}
+      coordinate={pin.location}
+      image={touristSpotMarkerImg}
+      title={pin.value.name}
+    />
+  );
+
+  renderCluster = (cluster, onPress) => (
+    <Marker
+      coordinate={cluster.coordinate}
+      onPress={onPress}
+    >
+      <View style={styles.clusterContainer}>
+        <Text style={styles.counterText}>
+          {cluster.pointCount}
+        </Text>
+      </View>
+    </Marker>
+  );
+
   render() {
     const { lodgingdata, tourdata, } = this.props;
+    const KanazawaStation = {
+      latitude: 36.5780818,
+      longitude: 136.6478206,
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00521,
+    };
+    if (tourdata) {
+      data1 = this.convertPoints(tourdata);
+    }
+
     if (lodgingdata) {
       return (
         <View style={styles.container}>
           <Modal />
-          <MapView
-            ref={ref => this.mapView === ref}
+          <ClusteredMapView
             style={styles.mapView}
+            ref={this.setMapRef}
+            data={data1}
+            animateClusters={false}
+            renderMarker={this.renderMarker}
+            renderCluster={this.renderCluster}
+            initialRegion={KanazawaStation}
           >
             {
               lodgingdata.map((lodgingFacility) => {
@@ -157,7 +221,7 @@ class Map extends React.Component {
               })
 
             }
-          </MapView>
+          </ClusteredMapView>
         </View>
       );
     } // else
