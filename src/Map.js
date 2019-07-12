@@ -107,6 +107,7 @@ class Map extends React.Component {
         <View style={styles.container}>
           <Modal />
           <MapView
+            ref={ref => this.mapView === ref}
             style={styles.mapView}
           >
             {

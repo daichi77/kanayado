@@ -4,7 +4,7 @@ import Stack from './Stack';
 // import MapDist from './mapDist';
 import DrawerCustom from './Container/drawerCustom';
 import Detail from './detailScreen';
-// import Hotel from './Hotelweb';
+import Hotel from './Hotelweb';
 import Dummy from './dummyComponent';
 
 const screenWidth = Dimensions.get('window').width;
@@ -15,7 +15,7 @@ const Drawer = createDrawerNavigator(
     HomeScreen: { screen: Stack },
     Dist: { screen: Dummy },
     DetaiScreen: { screen: Detail },
-    HotelWeb: { screen: Dummy },
+    HotelWeb: { screen: Hotel },
   },
   {
     drawerWidth,

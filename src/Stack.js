@@ -5,7 +5,7 @@ import HeaderLeftBack from './headerLeftBack';
 import HeaderRight from './headerRight';
 // import MapDist from './mapDist';
 import Detail from './Container/detailScreen';
-// import Hotel from './Hotelweb';
+import Hotel from './Hotelweb';
 import Map from './Container/Map';
 import Dummy from './dummyComponent';
 
@@ -29,7 +29,7 @@ const Stack = createStackNavigator({
     }),
   },
   HotelWeb: {
-    screen: Dummy,
+    screen: Hotel,
     navigationOptions: () => ({
       title: 'ネット予約',
       headerLeft: <HeaderLeftBack />,

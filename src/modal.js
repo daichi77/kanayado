@@ -101,7 +101,6 @@ class ModalScreen extends React.Component {
                   source={hotelData.hotelData.PictureURL === '' ? noPhotoImg : { uri: hotelData.hotelData.PictureURL }}
                   style={{ width: '100%', height: '100%' }}
                 />
-                {console.log(hotelData.hotelData.PictureURL)}
               </View>
 
               <View style={{ width: '60%', height: '100%' }}>

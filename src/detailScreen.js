@@ -74,19 +74,16 @@ const styles = StyleSheet.create({
 });
 
 const DetailScreen = ({ hotelData, navigation }) => {
-  const Hotelweb = (url) => {
+  const Hotelweb = () => {
+    const url = hotelData.hotelData.HotelUrl;
     navigation.navigate('HotelWeb', {
       hotelUrl: url,
     });
-    console.log(url);
   };
 
   const hotelArray1 = [];
   const hotelArray2 = [];
   const hotelArray3 = [];
-  const url = hotelData.hotelData.HotelUrl;
-  console.log(hotelData.hotelData.HotelName);
-  console.log(hotelData.hotelData.HotelUrl);
   for (s in hotelData.hotelData.HotelName) {
     if (hotelArray1.length < 13) {
       hotelArray1.push(hotelData.hotelData.HotelName[s]);
@@ -122,7 +119,7 @@ const DetailScreen = ({ hotelData, navigation }) => {
             <Text style={styles.PriceText}>¥{hotelData.hotelData.PlanSampleRateFrom}</Text>
           </View>
           <View style={styles.mbutton}>
-            <Button iconRight info onPress={() => Hotelweb(url)} style={styles.button}>
+            <Button iconRight info onPress={() => Hotelweb()} style={styles.button}>
               <Text> ネット予約 </Text>
               <Icon name="arrow-forward" />
             </Button>
