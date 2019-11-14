@@ -8,12 +8,12 @@ import { Marker } from 'react-native-maps';
 import { DOMParser } from 'xmldom';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
+import { API_KEY } from 'react-native-dotenv';
 import Modal from './modal';
 import global from './global';
 import touristSpotMarkerImg from '../assets/location.png';
 import currentPlaceImg from '../assets/currentPlace.png';
 import 'date-utils';
-import { API_KEY } from 'react-native-dotenv';
 
 let hotelsData = [];
 let vacancysData = [];
@@ -22,7 +22,6 @@ let touristSpotData = [];
 let data = [];
 let start1 = 1;
 let start2 = 1;
-console.log(API_KEY);
 const jalanKey = API_KEY;
 let timeData = 0;
 
@@ -33,11 +32,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
-
   mapView: {
     ...StyleSheet.absoluteFillObject,
   },
-
   markRed: {
     width: 15,
     height: 15,
@@ -83,7 +80,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 0,
     flexDirection: 'row-reverse',
-    // justifyContent: 'center',
     alignSelf: 'flex-end',
     top: '134%',
     width: 86,
@@ -91,9 +87,6 @@ const styles = StyleSheet.create({
   },
   imageButton: {
     flex: 0,
-    // flexDirection: 'row-reverse',
-    // justifyContent: 'flex-end',
-    // alignItems: 'flex-end',
     right: '340%',
     top: '583%',
     width: 86,
@@ -127,15 +120,19 @@ class Map extends React.Component {
       lodgingFacilities: [],
       isOpen: false,
       errorMessage: null,
+      error: '',
     };
   }
 
   componentDidMount() {
-    this.getLocationAsync()
-      .catch(e => this.setState({ errorMessage: e }));
+    this.getLocationAsync().catch(e => this.setState({ errorMessage: e }));
     this.nowTime();
-    this.touristSpot('https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1');
-    this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
+    this.touristSpot(
+      'https://infra-api.city.kanazawa.ishikawa.jp/facilities/search.json?lang=ja&page=1&count=50&area=1&genre=1',
+    );
+    this.lodgingSpot(
+      `http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`,
+    );
   }
 
   // 現在地取得
@@ -148,16 +145,19 @@ class Map extends React.Component {
     }
 
     const location = await Location.getCurrentPositionAsync({});
-    this.setState({
-      current: {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0,
-        longitudeDelta: 0,
+    this.setState(
+      {
+        current: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0,
+          longitudeDelta: 0,
+        },
       },
-    }, () => {
-      this.animateToCurrent();
-    });
+      () => {
+        this.animateToCurrent();
+      },
+    );
   };
 
   setMapRef = (clusteredMap) => {
@@ -205,8 +205,8 @@ class Map extends React.Component {
       } else {
         this.setState({ touristFacilities: touristSpotData });
       }
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      this.setState({ error });
     }
   };
 
@@ -237,15 +237,16 @@ class Map extends React.Component {
             const hotelName = hotels[i].getElementsByTagName('HotelName')[0].textContent;
             const hotelAddress = hotels[i].getElementsByTagName('HotelAddress')[0].textContent;
             const hotelURL = hotels[i].getElementsByTagName('HotelDetailURL')[0].textContent;
-            const planSampleRateFrom = hotels[i].getElementsByTagName('SampleRateFrom')[0].textContent;
+            const planSampleRateFrom = hotels[i].getElementsByTagName('SampleRateFrom')[0]
+              .textContent;
             const hotelReview = hotels[i].getElementsByTagName('Rating')[0].textContent;
             if (hotels[i].getElementsByTagName('PictureURL')[0] !== undefined) {
               pictureURL = hotels[i].getElementsByTagName('PictureURL')[0].textContent;
             }
             const jx = hotels[i].getElementsByTagName('X')[0].textContent / 1000 / 3600;
             const jy = hotels[i].getElementsByTagName('Y')[0].textContent / 1000 / 3600;
-            const wx = (jx - jy * 0.000046038 - jx * 0.000083043 + 0.010040);
-            const wy = (jy - jy * 0.00010695 + jx * 0.000017464 + 0.0046017);
+            const wx = jx - jy * 0.000046038 - jx * 0.000083043 + 0.01004;
+            const wy = jy - jy * 0.00010695 + jx * 0.000017464 + 0.0046017;
 
             hotelData[i] = {
               HotelID: hotelId,
@@ -260,16 +261,18 @@ class Map extends React.Component {
               State: 'noVacancy',
             };
           }
-
           start1 += 100;
           hotelsData = hotelsData.concat(hotelData);
-          this.lodgingSpot(`http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`);
+          this.lodgingSpot(
+            `http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key=${jalanKey}&s_area=192002&start=${start1}&count=100&xml_ptn=2`,
+          );
         } else if (request.status === 400) {
-          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${timeData}&start=${start2}&count=100&order=2`);
+          this.lodgingVacancySpot(
+            `http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${timeData}&start=${start2}&count=100&order=2`,
+          );
         }
       }
     };
-
     request.open('GET', url);
     request.send();
   }
@@ -303,8 +306,8 @@ class Map extends React.Component {
             }
             const jx = hotels[i].getElementsByTagName('X')[0].textContent / 1000 / 3600;
             const jy = hotels[i].getElementsByTagName('Y')[0].textContent / 1000 / 3600;
-            const wx = (jx - jy * 0.000046038 - jx * 0.000083043 + 0.010040);
-            const wy = (jy - jy * 0.00010695 + jx * 0.000017464 + 0.0046017);
+            const wx = jx - jy * 0.000046038 - jx * 0.000083043 + 0.01004;
+            const wy = jy - jy * 0.00010695 + jx * 0.000017464 + 0.0046017;
 
             hotelData[i] = {
               HotelID: hotelId,
@@ -320,17 +323,25 @@ class Map extends React.Component {
             };
           }
 
-          hotelData = hotelData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
+          hotelData = hotelData.filter(
+            (v1, i1, a1) => a1.findIndex(v2 => v1.HotelID === v2.HotelID) === i1,
+          );
           // 100件の空室データから重複したIDを削除(値段が安いのが残る)
           vacancysData = vacancysData.concat(hotelData);
           start2 += 100;
-          this.lodgingVacancySpot(`http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${timeData}&start=${start2}&count=100&order=2`);
+          this.lodgingVacancySpot(
+            `http://jws.jalan.net/APIAdvance/StockSearch/V1/?key=${jalanKey}&s_area=192002&stay_date=${timeData}&start=${start2}&count=100&order=2`,
+          );
         } else if (request.status === 400) {
           // 全ての空室データから重複したIDを削除(値段が安いのが残る)
-          vacancysData = vacancysData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
+          vacancysData = vacancysData.filter(
+            (v1, i1, a1) => a1.findIndex(v2 => v1.HotelID === v2.HotelID) === i1,
+          );
           // 空室データと宿泊施設データを結合し、重複したIDを削除(空室データが優先して残る)
           lodgingSpotData = vacancysData.concat(hotelsData);
-          lodgingSpotData = lodgingSpotData.filter((v1, i1, a1) => (a1.findIndex(v2 => (v1.HotelID === v2.HotelID)) === i1));
+          lodgingSpotData = lodgingSpotData.filter(
+            (v1, i1, a1) => a1.findIndex(v2 => v1.HotelID === v2.HotelID) === i1,
+          );
           this.setState({ lodgingFacilities: lodgingSpotData });
           global.lodgingF = lodgingSpotData;
         }
@@ -340,15 +351,13 @@ class Map extends React.Component {
     request.send();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   convertPoints(data1) {
+    let array = [];
     const results = {
       type: 'MapCollection',
       features: [],
     };
-    // eslint-disable-next-line array-callback-return
     data1.map((value) => {
-      // eslint-disable-next-line no-undef
       array = {
         value,
         location: {
@@ -356,8 +365,8 @@ class Map extends React.Component {
           longitude: value.coordinates.longitude,
         },
       };
-      // eslint-disable-next-line no-undef
-      results.features.push(array);
+      const featuresArray = results.features.push(array);
+      return featuresArray;
     });
     return results.features;
   }
@@ -372,22 +381,25 @@ class Map extends React.Component {
   );
 
   renderCluster = (cluster, onPress) => (
-    <Marker
-      coordinate={cluster.coordinate}
-      onPress={onPress}
-    >
+    <Marker coordinate={cluster.coordinate} onPress={onPress}>
       <View style={styles.clusterContainer}>
-        <Text style={styles.counterText}>
-          {cluster.pointCount}
-        </Text>
+        <Text style={styles.counterText}>{cluster.pointCount}</Text>
       </View>
     </Marker>
   );
 
   render() {
     const {
-      lodgingFacilities, touristFacilities, isOpen, current, errorMessage,
+      lodgingFacilities,
+      touristFacilities,
+      isOpen,
+      current,
+      errorMessage,
+      error,
     } = this.state;
+    if (error.state) {
+      return <Text>Caught an error</Text>;
+    }
     const KanazawaStation = {
       latitude: 36.5780818,
       longitude: 136.6478206,
@@ -397,7 +409,7 @@ class Map extends React.Component {
     const data1 = this.convertPoints(touristFacilities);
 
     if (errorMessage) {
-      console.error(errorMessage);
+      return <Text>errorMessage</Text>;
     }
     return (
       <View style={styles.container}>
@@ -416,14 +428,8 @@ class Map extends React.Component {
           renderCluster={this.renderCluster}
           initialRegion={KanazawaStation}
         >
-          <TouchableOpacity
-            style={styles.image}
-            onPress={this.animateToCurrent}
-          >
-            <Image
-              style={styles.imageButton}
-              source={placeRequire}
-            />
+          <TouchableOpacity style={styles.image} onPress={this.animateToCurrent}>
+            <Image style={styles.imageButton} source={placeRequire} />
           </TouchableOpacity>
           <Marker
             ref={this.setCurrentMarker}
@@ -432,7 +438,6 @@ class Map extends React.Component {
               longitude: current.longitude,
             }}
             title="現在地"
-            // description={"現在地はここです"}
             image={currentPlaceImg}
           />
           <View style={{ flexDirection: 'row' }}>
@@ -441,32 +446,29 @@ class Map extends React.Component {
             <View style={styles.markRed} />
             <Text style={styles.text1}>満室</Text>
           </View>
-          {
-            // 宿泊施設にピンを配置
-            lodgingFacilities.map((lodgingFacility) => {
-              let title = '値段';
-              if (lodgingFacility.HotelID !== undefined) {
-                title = lodgingFacility.PlanSampleRateFrom;
-              }
-              return (
-                <Marker
-                  coordinate={{
-                    latitude: lodgingFacility.Y,
-                    longitude: lodgingFacility.X,
-                  }}
-                  onPress={() => this.gotoElementScreen(lodgingFacility)}
-                  key={lodgingFacility.HotelID}
+          {// 宿泊施設にピンを配置
+          lodgingFacilities.map((lodgingFacility) => {
+            let title = '値段';
+            if (lodgingFacility.HotelID !== undefined) {
+              title = lodgingFacility.PlanSampleRateFrom;
+            }
+            return (
+              <Marker
+                coordinate={{
+                  latitude: lodgingFacility.Y,
+                  longitude: lodgingFacility.X,
+                }}
+                onPress={() => this.gotoElementScreen(lodgingFacility)}
+                key={lodgingFacility.HotelID}
+              >
+                <View
+                  style={lodgingFacility.State === 'vacancy' ? styles.markerBlue : styles.markerRed}
                 >
-                  <View
-                    style={lodgingFacility.State === 'vacancy' ? styles.markerBlue : styles.markerRed}
-                  >
-                    <Text style={styles.text}>
-                      {title}
-                    </Text>
-                  </View>
-                </Marker>);
-            })
-          }
+                  <Text style={styles.text}>{title}</Text>
+                </View>
+              </Marker>
+            );
+          })}
         </ClusteredMapView>
       </View>
     );
