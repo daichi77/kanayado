@@ -8,14 +8,10 @@ const HeaderLeft = ({ navigation }) => (
   <TouchableOpacity
     onPress={() => {
       navigation.openDrawer();
-      navigation.navigate('MainScreen');
+      // navigation.navigate('MainScreen');
     }}
   >
-    <SearchIcon
-      name="search1"
-      size={25}
-      style={{ marginLeft: 15 }}
-    />
+    <SearchIcon name="search1" size={25} style={{ marginLeft: 15 }} />
   </TouchableOpacity>
 );
 
