@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { modalIsOpen, saveHotelData } from '../Actions/index';
 import Map from '../Map';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     tourdata: state.postTour.items,
     lodgingdata: state.postLodging.items,

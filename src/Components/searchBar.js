@@ -20,7 +20,7 @@ const Search = ({ sendFilterText }) => (
       }}
       inputStyle={{ backgroundColor: '#F8FBEF' }}
       returnKeyType="done"
-      onChangeText={(text) => {
+      onChangeText={text => {
         sendFilterText(text);
       }}
     />

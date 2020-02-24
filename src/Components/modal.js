@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  StyleSheet, View, Image,
-} from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import Modal from 'react-native-modalbox';
-import {
-  Container,
-  Button,
-  Text,
-  Icon,
-} from 'native-base';
+import { Container, Button, Text, Icon } from 'native-base';
 import { withNavigation } from 'react-navigation';
 import Reviewpng from '../assets/review.png';
 
@@ -74,26 +67,18 @@ const styles = StyleSheet.create({
 
 const noPhotoImg = require('../assets/noPhoto.png');
 
-
 class ModalScreen extends React.Component {
-
   detailScreen = () => {
     const { navigation } = this.props;
     navigation.navigate('DetailScreen');
   };
 
   render() {
-    const { isOpen, toggelModalIsOpen, hotelData, } = this.props;
+    const { isOpen, toggelModalIsOpen, hotelData } = this.props;
 
     if (hotelData) {
       return (
-        <Modal
-          isOpen={isOpen}
-          onClosed={toggelModalIsOpen}
-          backdrop={false}
-          style={styles.modal}
-          position="bottom"
-        >
+        <Modal isOpen={isOpen} onClosed={toggelModalIsOpen} backdrop={false} style={styles.modal} position="bottom">
           <Container>
             <View style={styles.horizontal}>
               <View style={{ width: '40%', height: '100%' }}>
@@ -105,20 +90,27 @@ class ModalScreen extends React.Component {
 
               <View style={{ width: '60%', height: '100%' }}>
                 <View style={styles.vertical}>
-                  <View style={{
-                    width: '100%', height: '30%', borderColor: '#BDBDBD', borderStyle: 'solid', borderBottomWidth: 1, borderTopWidth: 5,
-                  }}
+                  <View
+                    style={{
+                      width: '100%',
+                      height: '30%',
+                      borderColor: '#BDBDBD',
+                      borderStyle: 'solid',
+                      borderBottomWidth: 1,
+                      borderTopWidth: 5,
+                    }}
                   >
                     <Text style={styles.text1}>{hotelData.hotelData.HotelName}</Text>
                   </View>
 
                   <View style={styles.review}>
-                    <Image
-                      source={Reviewpng}
-                      style={styles.review}
-                    />
+                    <Image source={Reviewpng} style={styles.review} />
                     <View>
-                      {hotelData.hotelData.HotelReview === '' ? <Text style={styles.text}>レビューなし</Text> : <Text style={styles.text}>{hotelData.hotelData.HotelReview}/5.0</Text>}
+                      {hotelData.hotelData.HotelReview === '' ? (
+                        <Text style={styles.text}>レビューなし</Text>
+                      ) : (
+                        <Text style={styles.text}>{hotelData.hotelData.HotelReview}/5.0</Text>
+                      )}
                     </View>
                   </View>
 
@@ -127,10 +119,7 @@ class ModalScreen extends React.Component {
                       <View style={{ width: '50%', height: '100%' }}>
                         <View style={styles.vertical}>
                           <View style={styles.background1}>
-                            <Text style={styles.text2}>
-                              ¥
-                            {hotelData.hotelData.PlanSampleRateFrom}
-                            </Text>
+                            <Text style={styles.text2}>¥{hotelData.hotelData.PlanSampleRateFrom}</Text>
                           </View>
                         </View>
                       </View>
@@ -147,7 +136,6 @@ class ModalScreen extends React.Component {
                       </View>
                     </View>
                   </View>
-
                 </View>
               </View>
             </View>
@@ -155,9 +143,7 @@ class ModalScreen extends React.Component {
         </Modal>
       );
     } // else {
-    return (
-      <Text>nodata</Text>
-    );
+    return <Text>nodata</Text>;
   }
 }
 

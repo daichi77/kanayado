@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import DrawerCustom from '../drawerCustom';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   // console.log(state);
   return {
     tourdata: state.postTour.items,

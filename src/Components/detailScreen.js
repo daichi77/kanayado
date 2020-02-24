@@ -1,16 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  Platform,
-} from 'react-native';
-import {
-  Container,
-  Button,
-  Text,
-  Icon,
-} from 'native-base';
+import { StyleSheet, View, Image, Platform } from 'react-native';
+import { Container, Button, Text, Icon } from 'native-base';
 
 const styles = StyleSheet.create({
   container: {
@@ -87,11 +77,9 @@ const DetailScreen = ({ hotelData, navigation }) => {
   for (s in hotelData.hotelData.HotelName) {
     if (hotelArray1.length < 13) {
       hotelArray1.push(hotelData.hotelData.HotelName[s]);
-    }
-    else if (hotelArray2.length < 13) {
+    } else if (hotelArray2.length < 13) {
       hotelArray2.push(hotelData.hotelData.HotelName[s]);
-    }
-    else {
+    } else {
       hotelArray3.push(hotelData.hotelData.HotelName[s]);
     }
   }
@@ -102,10 +90,7 @@ const DetailScreen = ({ hotelData, navigation }) => {
     <Container>
       <View style={styles.container}>
         <View style={styles.image}>
-          <Image
-            style={{ flex: 3 }}
-            source={{ uri: hotelData.hotelData.PictureURL }}
-          />
+          <Image style={{ flex: 3 }} source={{ uri: hotelData.hotelData.PictureURL }} />
         </View>
 
         <View style={styles.HotelName}>
@@ -126,13 +111,11 @@ const DetailScreen = ({ hotelData, navigation }) => {
           </View>
         </View>
 
-
         <View style={styles.Home}>
           <View style={styles.homeAddress}>
             <Text style={styles.homeAddressText}>{hotelData.hotelData.HotelAddress}</Text>
           </View>
         </View>
-
       </View>
     </Container>
   );

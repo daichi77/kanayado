@@ -22,7 +22,7 @@ const Drawer = createDrawerNavigator(
     drawerBackgroundColor: '#FFFFFF',
     drawerType: 'front',
     contentComponent: DrawerCustom,
-  },
+  }
 );
 
 export default Drawer;

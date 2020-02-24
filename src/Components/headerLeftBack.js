@@ -6,11 +6,7 @@ import SearchIcon from 'react-native-vector-icons/AntDesign';
 
 const HeaderLeft = ({ navigation }) => (
   <TouchableOpacity onPress={() => navigation.goBack()}>
-    <SearchIcon
-      name="left"
-      size={25}
-      style={{ marginLeft: 15 }}
-    />
+    <SearchIcon name="left" size={25} style={{ marginLeft: 15 }} />
   </TouchableOpacity>
 );
 

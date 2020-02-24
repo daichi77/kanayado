@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  View, Text, StyleSheet,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import ClusteredMapView from 'react-native-maps-super-cluster';
 import { BarIndicator } from 'react-native-indicators';
 import MapView, { Marker } from 'react-native-maps';
@@ -96,14 +94,13 @@ const styles = StyleSheet.create({
 });
 
 class Map extends React.Component {
-
-  comeOutModal = (lodgingFacility) => {
+  comeOutModal = lodgingFacility => {
     const { modalIsOpen, saveHotelData } = this.props;
     saveHotelData(lodgingFacility);
     modalIsOpen();
   };
 
-  setMapRef = (clusteredMap) => {
+  setMapRef = clusteredMap => {
     this.mapView = clusteredMap.getMapRef();
   };
 
@@ -125,32 +122,22 @@ class Map extends React.Component {
       results.features.push(array);
     });
     return results.features;
-  }
+  };
 
   renderMarker = pin => (
-    <Marker
-      key={pin.value.id}
-      coordinate={pin.location}
-      image={touristSpotMarkerImg}
-      title={pin.value.name}
-    />
+    <Marker key={pin.value.id} coordinate={pin.location} image={touristSpotMarkerImg} title={pin.value.name} />
   );
 
   renderCluster = (cluster, onPress) => (
-    <Marker
-      coordinate={cluster.coordinate}
-      onPress={onPress}
-    >
+    <Marker coordinate={cluster.coordinate} onPress={onPress}>
       <View style={styles.clusterContainer}>
-        <Text style={styles.counterText}>
-          {cluster.pointCount}
-        </Text>
+        <Text style={styles.counterText}>{cluster.pointCount}</Text>
       </View>
     </Marker>
   );
 
   render() {
-    const { lodgingdata, tourdata, } = this.props;
+    const { lodgingdata, tourdata } = this.props;
     const KanazawaStation = {
       latitude: 36.5780818,
       longitude: 136.6478206,
@@ -174,60 +161,49 @@ class Map extends React.Component {
             renderCluster={this.renderCluster}
             initialRegion={KanazawaStation}
           >
-            {
-              lodgingdata.map((lodgingFacility) => {
-                let title = '値段';
-                if (lodgingFacility.HotelID !== undefined) {
-                  title = lodgingFacility.PlanSampleRateFrom;
-                }
-                return (
-                  <Marker
-                    coordinate={{
-                      latitude: lodgingFacility.Y,
-                      longitude: lodgingFacility.X,
-                    }}
-                    onPress={() => this.comeOutModal(lodgingFacility)}
-                    key={lodgingFacility.HotelID}
-                  >
-                    <View
-                      style={lodgingFacility.State === 'vacancy' ? styles.markerBlue : styles.markerRed}
-                    >
-                      <Text style={styles.text}>
-                        {title}
-                      </Text>
-                    </View>
-                  </Marker>
-                );
-              })
-            }
-            {
-              // 観光施設にピンを配置
-              tourdata.map((touristFacilitie) => {
-                let title = '観光地名';
-                if (touristFacilitie.id !== undefined) {
-                  title = touristFacilitie.name;
-                }
-                return (
-                  <Marker
-                    coordinate={{
-                      latitude: touristFacilitie.coordinates.latitude,
-                      longitude: touristFacilitie.coordinates.longitude,
-                    }}
-                    title={title}
-                    key={touristFacilitie.id}
-                    image={touristSpotMarkerImg}
-                  />
-                );
-              })
-
-            }
+            {lodgingdata.map(lodgingFacility => {
+              let title = '値段';
+              if (lodgingFacility.HotelID !== undefined) {
+                title = lodgingFacility.PlanSampleRateFrom;
+              }
+              return (
+                <Marker
+                  coordinate={{
+                    latitude: lodgingFacility.Y,
+                    longitude: lodgingFacility.X,
+                  }}
+                  onPress={() => this.comeOutModal(lodgingFacility)}
+                  key={lodgingFacility.HotelID}
+                >
+                  <View style={lodgingFacility.State === 'vacancy' ? styles.markerBlue : styles.markerRed}>
+                    <Text style={styles.text}>{title}</Text>
+                  </View>
+                </Marker>
+              );
+            })}
+            {// 観光施設にピンを配置
+            tourdata.map(touristFacilitie => {
+              let title = '観光地名';
+              if (touristFacilitie.id !== undefined) {
+                title = touristFacilitie.name;
+              }
+              return (
+                <Marker
+                  coordinate={{
+                    latitude: touristFacilitie.coordinates.latitude,
+                    longitude: touristFacilitie.coordinates.longitude,
+                  }}
+                  title={title}
+                  key={touristFacilitie.id}
+                  image={touristSpotMarkerImg}
+                />
+              );
+            })}
           </ClusteredMapView>
         </View>
       );
     } // else
-    return (
-      <BarIndicator />
-    );
+    return <BarIndicator />;
   }
 }
 

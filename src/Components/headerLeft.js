@@ -11,11 +11,7 @@ const HeaderLeft = ({ navigation }) => (
       // navigation.navigate('MainScreen');
     }}
   >
-    <SearchIcon
-      name="search1"
-      size={25}
-      style={{ marginLeft: 15 }}
-    />
+    <SearchIcon name="search1" size={25} style={{ marginLeft: 15 }} />
   </TouchableOpacity>
 );
 

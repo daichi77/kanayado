@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  View, Text, ScrollView, StyleSheet, FlatList,
-} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import Icon from 'react-native-vector-icons/AntDesign';
 import PropTypes from 'prop-types';
