@@ -3,10 +3,11 @@ import { createStackNavigator } from 'react-navigation';
 import HeaderLeft from './headerLeft';
 import HeaderLeftBack from './headerLeftBack';
 import HeaderRight from './headerRight';
-import Map from './Map';
-import MapDist from './mapDist';
-import Detail from './detailScreen';
+// import MapDist from './mapDist';
+import Detail from './Container/detailScreen';
 import Hotel from './Hotelweb';
+import Map from './Container/Map';
+import Dummy from './dummyComponent';
 
 const Stack = createStackNavigator({
   MainScreen: {
@@ -18,7 +19,7 @@ const Stack = createStackNavigator({
     }),
   },
   Dist: {
-    screen: MapDist,
+    screen: Dummy,
   },
   DetailScreen: {
     screen: Detail,

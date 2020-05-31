@@ -5,8 +5,7 @@ import {
 import { SafeAreaView } from 'react-navigation';
 import Icon from 'react-native-vector-icons/AntDesign';
 import PropTypes from 'prop-types';
-import SearchBar from './searchBar';
-import global from './global';
+import SearchBar from './Container/searchBar';
 
 const styles = StyleSheet.create({
   searchAndIcon: {
@@ -32,73 +31,51 @@ const styles = StyleSheet.create({
   },
 });
 
-class DrawerCustom extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filterText: '',
-    };
+const DrawerCustom = ({ tourdata, navigation, filterText }) => {
+  const keyExtractor = item => item.id;
+
+  let data = tourdata;
+  if (filterText) {
+    data = data.filter(t => t.name.includes(filterText.text));
   }
 
-  keyExtractor = item => item.id;
-
-  setFilter = (text) => {
-    this.setState({
-      filterText: text,
-    });
-  };
-
-  render() {
-    const { navigation } = this.props;
-    const { filterText } = this.state;
-    let kankoudata = global.touristF;
-    if (filterText !== '') {
-      kankoudata = kankoudata.filter(t => t.name.includes(filterText));
-    }
-    return (
-      <SafeAreaView>
-        <View style={styles.searchAndIcon}>
-          <Icon
-            name="left"
-            size={25}
-            onPress={() => {
-              navigation.closeDrawer();
-              // navigation.navigate('MainScreen');
-            }}
-            style={styles.icon}
-          />
-          <SearchBar
-            includeFilter={(text) => {
-              this.setFilter(text);
-            }}
-          />
-        </View>
-        <ScrollView>
-          <FlatList
-            data={kankoudata}
-            keyExtractor={this.keyExtractor}
-            renderItem={({ item }) => (
-              <View style={styles.kankouview}>
-                <Text
-                  style={styles.kankoutext}
-                  onPress={() => {
-                    navigation.closeDrawer();
-                    navigation.navigate('Dist', { dist: item });
-                    console.log(item);
-                  }}
-                >
-                  {item.name}
-                </Text>
-              </View>
-            )}
-          />
-          <Text style={styles.scroll}>scrollのバグを解決するためのText</Text>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
-
+  return (
+    <SafeAreaView>
+      <View style={styles.searchAndIcon}>
+        <Icon
+          name="left"
+          size={25}
+          onPress={() => {
+            navigation.closeDrawer();
+          }}
+          style={styles.icon}
+        />
+        <SearchBar />
+      </View>
+      <ScrollView>
+        <FlatList
+          data={data}
+          keyExtractor={keyExtractor}
+          renderItem={({ item }) => (
+            <View style={styles.kankouview}>
+              <Text
+                style={styles.kankoutext}
+                onPress={() => {
+                  // navigation.closeDrawer();
+                  // navigation.navigate('Dist', { dist: item });
+                  // console.log(item);
+                }}
+              >
+                {item.name}
+              </Text>
+            </View>
+          )}
+        />
+        <Text style={styles.scroll}>scrollのバグを解決するためのText</Text>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 DrawerCustom.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
